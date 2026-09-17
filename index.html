@@ -142,6 +142,22 @@ section{padding-block:96px;border-bottom:1px solid var(--line)}
 .card h3{font-size:24px;font-weight:600}
 .card p{color:var(--muted)}
 
+/* Smart-TV */
+.tvsteps{display:grid;grid-template-columns:repeat(4,1fr);gap:16px}
+@media (max-width:900px){.tvsteps{grid-template-columns:repeat(2,1fr)}}
+@media (max-width:560px){.tvsteps{grid-template-columns:1fr}}
+.tvstep{border:1px solid var(--line);border-radius:12px;padding:22px;background:var(--panel);display:grid;gap:8px;align-content:start}
+.tvstep .n{width:30px;height:30px;border-radius:50%;background:var(--accent-strong);display:grid;place-items:center;font-weight:600;font-size:14px}
+.tvstep h3{font-size:18px;font-weight:600}
+.tvstep p{color:var(--muted);font-size:15px}
+.who{font-size:12px;font-weight:600;color:var(--accent)}
+.faq{margin-top:40px;display:grid;grid-template-columns:1fr 1fr;gap:16px}
+@media (max-width:760px){.faq{grid-template-columns:1fr}}
+.qa{border:1px solid var(--line);border-radius:12px;padding:22px 24px;display:grid;gap:8px}
+.qa h3{font-size:17px;font-weight:600;display:flex;gap:10px;align-items:center}
+.qa h3 .i{color:var(--accent);width:20px;height:20px}
+.qa p{color:var(--muted);font-size:15px}
+.note{margin-top:16px;font-size:14px;color:var(--dim)}
 /* Use cases */
 .uses{display:flex;flex-wrap:wrap;gap:12px}
 .use{display:flex;align-items:center;gap:12px;padding:14px 20px;border:1px solid var(--line);border-radius:999px;font-weight:500}
@@ -206,6 +222,10 @@ footer .wrap{display:flex;justify-content:space-between;gap:16px;flex-wrap:wrap}
   <symbol id="building" viewBox="0 0 24 24"><rect x="4" y="2" width="16" height="20" rx="2"/><path d="M9 22v-4h6v4M8 6h.01M16 6h.01M12 6h.01M12 10h.01M12 14h.01M16 10h.01M16 14h.01M8 10h.01M8 14h.01"/></symbol>
   <symbol id="dumbbell" viewBox="0 0 24 24"><path d="M14.4 14.4 9.6 9.6M18.7 21.5a2 2 0 1 1-2.8-2.8l-1.8 1.8a2 2 0 1 1-2.8-2.8l6.3-6.3a2 2 0 1 1 2.8 2.8l-1.8 1.8a2 2 0 1 1 2.8 2.8zM21.5 21.5l-1.4-1.4M3.9 3.9 2.5 2.5M6.4 12.8a2 2 0 1 1-2.8-2.8l1.8-1.8a2 2 0 1 1-2.8-2.8l2.8-2.8a2 2 0 1 1 2.8 2.8l1.8-1.8a2 2 0 1 1 2.8 2.8z"/></symbol>
   <symbol id="shield" viewBox="0 0 24 24"><path d="M20 13c0 5-3.5 7.5-7.7 9a1 1 0 0 1-.7 0C7.5 20.5 4 18 4 13V6a1 1 0 0 1 1-1c2 0 4.5-1.2 6.2-2.7a1.2 1.2 0 0 1 1.6 0C14.5 3.8 17 5 19 5a1 1 0 0 1 1 1z"/></symbol>
+  <symbol id="power" viewBox="0 0 24 24"><path d="M12 2v10M18.4 6.6a9 9 0 1 1-12.8 0"/></symbol>
+  <symbol id="moon" viewBox="0 0 24 24"><path d="M12 3a6 6 0 0 0 9 9 9 9 0 1 1-9-9z"/></symbol>
+  <symbol id="zap" viewBox="0 0 24 24"><path d="M13 2 3 14h9l-1 8 10-12h-9z"/></symbol>
+  <symbol id="tvq" viewBox="0 0 24 24"><rect x="2" y="7" width="20" height="15" rx="2"/><path d="m17 2-5 5-5-5"/></symbol>
   <symbol id="arrow" viewBox="0 0 24 24"><path d="M5 12h14M13 6l6 6-6 6"/></symbol>
 </svg>
 
@@ -355,6 +375,29 @@ footer .wrap{display:flex;justify-content:space-between;gap:16px;flex-wrap:wrap}
 <section>
   <div class="wrap">
     <div class="head">
+      <div class="eyebrow" data-t="st_eyebrow"></div>
+      <h2 data-t="st_h2"></h2>
+      <p class="lead" data-t="st_lead"></p>
+    </div>
+    <div class="tvsteps">
+      <div class="tvstep"><span class="n">1</span><span class="who" data-t="who_us"></span><h3 data-t="st1h"></h3><p data-t="st1"></p></div>
+      <div class="tvstep"><span class="n">2</span><span class="who" data-t="who_us"></span><h3 data-t="st2h"></h3><p data-t="st2"></p></div>
+      <div class="tvstep"><span class="n">3</span><span class="who" data-t="who_us"></span><h3 data-t="st3h"></h3><p data-t="st3"></p></div>
+      <div class="tvstep"><span class="n">4</span><span class="who" data-t="who_you"></span><h3 data-t="st4h"></h3><p data-t="st4"></p></div>
+    </div>
+    <div class="faq">
+      <div class="qa"><h3><svg class="i"><use href="#power"/></svg><span data-t="q1"></span></h3><p data-t="a1"></p></div>
+      <div class="qa"><h3><svg class="i"><use href="#moon"/></svg><span data-t="q2"></span></h3><p data-t="a2"></p></div>
+      <div class="qa"><h3><svg class="i"><use href="#zap"/></svg><span data-t="q3"></span></h3><p data-t="a3"></p></div>
+      <div class="qa"><h3><svg class="i"><use href="#tvq"/></svg><span data-t="q4"></span></h3><p data-t="a4"></p></div>
+    </div>
+    <p class="note" data-t="st_note"></p>
+  </div>
+</section>
+
+<section>
+  <div class="wrap">
+    <div class="head">
       <div class="eyebrow" data-t="use_eyebrow"></div>
       <h2 data-t="use_h2"></h2>
     </div>
@@ -428,6 +471,19 @@ footer .wrap{display:flex;justify-content:space-between;gap:16px;flex-wrap:wrap}
 const DEFAULT_LANG = "de";
 const I18N = {
 de: {
+  st_eyebrow: "Smart-TVs im Detail",
+  st_h2: "So kommt VizPlay auf Ihren Fernseher",
+  st_lead: "Die Einrichtung übernehmen wir einmalig vor Ort. Danach ist für Sie nichts mehr zu tun – der Fernseher wird ganz normal ein- und ausgeschaltet.",
+  who_us: "Machen wir", who_you: "Machen Sie",
+  st1h: "TV prüfen", st1: "Wir prüfen, ob der Fernseher Android bzw. Google TV hat (erkennbar am Google Play Store).",
+  st2h: "App installieren", st2: "Wir laden die VizPlay-App auf den Fernseher und verbinden ihn sicher mit Ihrem VizPlay-System.",
+  st3h: "Als Startbildschirm festlegen", st3: "VizPlay ersetzt das normale TV-Menü. So startet beim Einschalten sofort Ihr Programm statt Fernsehen.",
+  st4h: "Inhalte steuern", st4: "Ab jetzt alles bequem vom Computer oder Handy aus. Der TV erscheint automatisch in Ihrer Übersicht.",
+  q1: "Wie schalte ich ein und aus?", a1: "Ganz normal mit der Fernbedienung. Nach dem Einschalten läuft VizPlay automatisch und zeigt sofort das aktuelle Programm – ohne dass jemand etwas antippen muss.",
+  q2: "Und nachts oder nach Ladenschluss?", a2: "Per Zeitplan wird das Bild zu festen Zeiten automatisch schwarz geschaltet und morgens wieder gestartet. Der TV bleibt dabei im Betrieb; wer Strom sparen will, schaltet ihn abends per Fernbedienung oder Zeitschaltuhr aus.",
+  q3: "Was passiert bei Stromausfall?", a3: "Sobald der Strom zurück ist und der TV läuft, startet VizPlay von selbst. Die Inhalte sind auf dem Gerät gespeichert und laufen sofort wieder – auch wenn das Internet noch fehlt.",
+  q4: "Geht das mit jedem Smart-TV?", a4: "Mit Android- bzw. Google-TVs (z. B. TCL, viele Sony, Philips und Hisense-Modelle mit Google TV). Samsung-, LG- und VIDAA-Fernseher haben kein Android – dort kommt einfach die kleine Box an den HDMI-Anschluss.",
+  st_note: "Voraussetzung: Der Fernseher ist per WLAN oder Netzwerkkabel mit dem Internet bzw. Firmennetz verbunden.",
   hero_eyebrow: "Digital Signage von Vizionists",
   hero_h1: "Alle Bildschirme. <em>Ein Klick.</em>",
   hero_lead: "Mit VizPlay steuern Sie Werbung, Menüs und Infos auf allen Bildschirmen zentral vom Computer oder Handy aus. Neue Inhalte sind in Sekunden auf dem TV – ohne USB-Stick, ohne Anfahrt, ohne Abo.",
@@ -515,6 +571,19 @@ de: {
   footer: "VizPlay · Digital Signage von Vizionists"
 },
 en: {
+  st_eyebrow: "Smart TVs in detail",
+  st_h2: "How VizPlay gets onto your TV",
+  st_lead: "We handle the setup once, on site. After that there's nothing for you to do – the TV is switched on and off as usual.",
+  who_us: "We do this", who_you: "You do this",
+  st1h: "Check the TV", st1: "We check that the TV runs Android or Google TV (recognizable by the Google Play Store).",
+  st2h: "Install the app", st2: "We install the VizPlay app on the TV and connect it securely to your VizPlay system.",
+  st3h: "Set as home screen", st3: "VizPlay replaces the normal TV menu, so switching on starts your program right away instead of TV.",
+  st4h: "Manage content", st4: "From now on, everything from your computer or phone. The TV appears in your overview automatically.",
+  q1: "How do I switch it on and off?", a1: "As usual, with the remote. Once switched on, VizPlay starts automatically and shows the current program right away – nobody has to press anything.",
+  q2: "What about at night or after closing?", a2: "A schedule turns the picture black at set times and starts it again in the morning. The TV stays on; to save power, switch it off in the evening with the remote or a timer plug.",
+  q3: "What happens after a power cut?", a3: "As soon as power is back and the TV is on, VizPlay starts by itself. Content is stored on the device and plays immediately – even if the internet isn't back yet.",
+  q4: "Does it work with every smart TV?", a4: "With Android / Google TVs (e.g. TCL, many Sony, Philips and Hisense models with Google TV). Samsung, LG and VIDAA TVs don't run Android – they simply get the small box on the HDMI port.",
+  st_note: "Requirement: the TV is connected to the internet or company network via Wi-Fi or network cable.",
   hero_eyebrow: "Digital signage by Vizionists",
   hero_h1: "Every screen. <em>One click.</em>",
   hero_lead: "With VizPlay you manage ads, menus and information on every screen centrally, from a computer or phone. New content is on the TV within seconds – no USB stick, no site visit, no subscription.",
@@ -602,6 +671,19 @@ en: {
   footer: "VizPlay · Digital signage by Vizionists"
 },
 ar: {
+  st_eyebrow: "التلفاز الذكي بالتفصيل",
+  st_h2: "كيف يصل VizPlay إلى تلفازك",
+  st_lead: "نتولى الإعداد مرة واحدة في موقعك. بعد ذلك لا يلزمك فعل أي شيء – يُشغَّل التلفاز ويُطفأ كالمعتاد.",
+  who_us: "نقوم به نحن", who_you: "تقوم به أنت",
+  st1h: "فحص التلفاز", st1: "نتأكد من أن التلفاز يعمل بنظام Android أو Google TV (يُعرف بوجود متجر Google Play).",
+  st2h: "تثبيت التطبيق", st2: "نثبّت تطبيق VizPlay على التلفاز ونربطه بشكل آمن بنظام VizPlay الخاص بك.",
+  st3h: "تعيينه كشاشة رئيسية", st3: "يحلّ VizPlay محل قائمة التلفاز المعتادة، فيبدأ برنامجك فور التشغيل بدلًا من القنوات.",
+  st4h: "إدارة المحتوى", st4: "من الآن كل شيء من الحاسوب أو الهاتف. ويظهر التلفاز تلقائيًا في لوحة النظرة العامة.",
+  q1: "كيف أشغّله وأطفئه؟", a1: "كالمعتاد بجهاز التحكم عن بُعد. بعد التشغيل يبدأ VizPlay تلقائيًا ويعرض البرنامج الحالي فورًا – دون أن يضغط أحد على أي شيء.",
+  q2: "وماذا عن الليل أو بعد الإغلاق؟", a2: "يُطفئ الجدول الزمني الصورة (شاشة سوداء) في أوقات محددة ويعيد تشغيلها صباحًا. يبقى التلفاز قيد التشغيل؛ ولتوفير الكهرباء يمكن إطفاؤه مساءً بجهاز التحكم أو بمقبس مؤقت.",
+  q3: "ماذا يحدث عند انقطاع الكهرباء؟", a3: "بمجرد عودة الكهرباء وتشغيل التلفاز يبدأ VizPlay من تلقاء نفسه. المحتوى مخزَّن على الجهاز ويُعرض فورًا – حتى لو لم يعد الإنترنت بعد.",
+  q4: "هل يعمل مع كل تلفاز ذكي؟", a4: "مع أجهزة Android / Google TV (مثل TCL والعديد من طرازات Sony وPhilips وHisense بنظام Google TV). أجهزة Samsung وLG وVIDAA لا تعمل بنظام Android – ويُركَّب لها ببساطة الجهاز الصغير في منفذ HDMI.",
+  st_note: "الشرط: أن يكون التلفاز متصلًا بالإنترنت أو بشبكة الشركة عبر Wi-Fi أو كابل شبكة.",
   hero_eyebrow: "اللافتات الرقمية من Vizionists",
   hero_h1: "كل الشاشات. <em>بنقرة واحدة.</em>",
   hero_lead: "مع VizPlay تتحكم بالإعلانات وقوائم الطعام والمعلومات على جميع الشاشات مركزيًا من الحاسوب أو الهاتف. يظهر المحتوى الجديد على التلفاز خلال ثوانٍ – بدون فلاشة، وبدون تنقّل، وبدون اشتراك.",
