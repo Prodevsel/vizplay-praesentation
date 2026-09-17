@@ -59,6 +59,9 @@ section{padding-block:96px;border-bottom:1px solid var(--line)}
 .tv{background:#000;border:12px solid #1c1c1f;border-radius:16px;aspect-ratio:16/9;position:relative;overflow:hidden;max-width:100%;box-shadow:0 40px 100px -40px rgba(79,70,229,.6)}
 .slide{position:absolute;inset:0;display:flex;flex-direction:column;justify-content:flex-end;gap:4px;padding:26px;opacity:0}
 .slide.on{opacity:1}
+.slide video{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;z-index:-1}
+.slide{isolation:isolate;text-shadow:0 2px 12px rgba(0,0,0,.6)}
+.slide::before{content:"";position:absolute;inset:0;z-index:-1;background:linear-gradient(0deg,rgba(0,0,0,.7),transparent 60%)}
 .slide b{font-size:clamp(20px,3vw,34px);font-weight:600;line-height:1.15}
 .slide small{font-size:13px;opacity:.8}
 .s1{background:radial-gradient(120% 90% at 20% 10%,#4338ca 0,#1e1b4b 55%,#0b0a1f 100%)}
@@ -125,76 +128,9 @@ section{padding-block:96px;border-bottom:1px solid var(--line)}
 .btn.primary:hover{background:#5b52f0}
 .btn.danger{background:#7f1d1d;border-color:#991b1b}
 .btn.danger:hover{background:#991b1b}
-.app-body{display:grid;grid-template-columns:210px 1fr;height:600px}
-.side{border-inline-end:1px solid var(--line);background:#0c0c0e;padding:14px 10px;display:flex;flex-direction:column;gap:4px}
-.side .brand{padding:4px 8px 14px;font-size:15px}
-.side .logo{width:24px;height:24px}
-.navb{display:flex;align-items:center;gap:10px;width:100%;padding:9px 10px;border-radius:8px;border:0;background:none;color:var(--muted);font:500 14px var(--sans);cursor:pointer;text-align:start}
-.navb:hover{background:var(--panel2);color:var(--fg)}
-.navb[aria-current="page"]{background:#1c1c20;color:var(--fg)}
-.navb .i{width:17px;height:17px}
-.navb .cnt{margin-inline-start:auto;font-size:12px;color:var(--dim)}
-.side .badge{margin-top:auto;font-size:12px;color:var(--dim);padding:8px 10px;border:1px dashed var(--line2);border-radius:8px;text-align:center}
-.main{overflow:auto;padding:22px 24px;position:relative}
-.mh{display:flex;align-items:center;gap:12px;flex-wrap:wrap;margin-bottom:18px}
-.mh h3{font-size:22px;font-weight:600}
-.mh .sp{margin-inline-start:auto;display:flex;gap:8px;flex-wrap:wrap}
-@media (max-width:760px){
-  .app-body{grid-template-columns:1fr;height:auto}
-  .side{flex-direction:row;overflow-x:auto;border-inline-end:0;border-bottom:1px solid var(--line);padding:8px}
-  .side .brand,.side .badge{display:none}
-  .navb{width:auto}
-  .navb .cnt{display:none}
-  .main{min-height:520px;padding:16px}
-  .app-bar .ttl{display:none}
-}
-.dgrid{display:grid;grid-template-columns:repeat(2,1fr);gap:14px}
-@media (max-width:520px){.dgrid{grid-template-columns:1fr}}
-.dcard{border:1px solid var(--line);border-radius:12px;background:var(--panel);overflow:hidden}
-.pv{aspect-ratio:16/9;position:relative;display:flex;flex-direction:column;justify-content:flex-end;padding:12px 14px;color:#fff;overflow:hidden}
-.pv b{font-size:17px;font-weight:600;line-height:1.2}
-.pv small{font-size:11px;opacity:.75}
-.pv .dots{position:absolute;top:10px;inset-inline-end:12px;display:flex;gap:4px}
-.pv .dots i{width:6px;height:6px;border-radius:50%;background:rgba(255,255,255,.35)}
-.pv .dots i.on{background:#fff}
-.pv.off{background:#000;color:var(--dim);align-items:center;justify-content:center}
-.dbody{padding:12px 14px;display:grid;gap:10px}
-.dtop{display:flex;justify-content:space-between;align-items:center;gap:8px}
-.dtop b{font-weight:600}
-.pill{font-size:12px;padding:2px 9px;border-radius:999px;white-space:nowrap}
-.pill.on{color:var(--ok);background:rgba(34,197,94,.1)}
-.pill.tk{color:var(--warn);background:rgba(245,158,11,.12)}
-.sel{width:100%;font:14px var(--sans);color:var(--fg);background:var(--panel2);border:1px solid var(--line2);border-radius:8px;padding:8px 10px}
-.flab{font-size:12px;color:var(--dim)}
-.plwrap{display:grid;grid-template-columns:220px 1fr;gap:16px;align-items:start}
-@media (max-width:620px){.plwrap{grid-template-columns:1fr}}
-.pllist{display:grid;gap:6px}
-.plb{display:grid;gap:2px;text-align:start;padding:12px;border-radius:10px;border:1px solid var(--line);background:var(--panel);color:var(--fg);font:500 14px var(--sans);cursor:pointer}
-.plb small{color:var(--dim);font-weight:400}
-.plb[aria-pressed="true"]{border-color:var(--accent);box-shadow:0 0 0 1px var(--accent)}
-.plb:focus-visible{outline:2px solid var(--accent);outline-offset:2px}
-.pled{border:1px solid var(--line);border-radius:12px;background:var(--panel);padding:16px;display:grid;gap:12px}
-.pled h4{margin:0;font-size:18px}
-.runs{font-size:13px;color:var(--muted)}
-.item{display:flex;align-items:center;gap:10px;padding:8px;border:1px solid var(--line);border-radius:8px;background:var(--bg)}
-.item .th{width:54px;height:32px;border-radius:5px;flex:none}
-.item span{flex:1;font-size:14px;min-width:0;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
-.item small{color:var(--dim);font-size:12px}
-.ib{width:30px;height:30px;display:grid;place-items:center;border-radius:6px;border:1px solid var(--line2);background:var(--panel2);color:var(--fg);cursor:pointer;flex:none}
-.ib:hover{background:#26262b}
-.ib:disabled{opacity:.35;cursor:default}
-.ib .i{width:14px;height:14px}
-.empty{color:var(--dim);font-size:14px;padding:10px 0}
-.mgrid{display:grid;grid-template-columns:repeat(auto-fill,minmax(150px,1fr));gap:12px}
-.mt{border:1px solid var(--line);border-radius:10px;overflow:hidden;background:var(--panel)}
-.mt .th{aspect-ratio:16/9;display:flex;align-items:flex-end;padding:8px 10px;color:#fff;font-size:13px;font-weight:600}
-.mt .mb{padding:8px 10px;font-size:12px;color:var(--dim);display:flex;justify-content:space-between;gap:6px}
-.mt .bar{height:4px;background:var(--line);border-radius:2px;overflow:hidden;margin:0 10px 10px}
-.mt .bar i{display:block;height:100%;background:var(--accent);transition:width .2s linear}
-.toast{position:sticky;bottom:0;margin-top:18px;display:flex;justify-content:center;pointer-events:none}
-.toast span{background:#1c1c20;border:1px solid var(--line2);border-radius:10px;padding:10px 16px;font-size:14px;box-shadow:0 10px 30px -10px #000;opacity:0;transform:translateY(8px);transition:opacity .2s,transform .2s}
-.toast span.show{opacity:1;transform:none}
-@media (prefers-reduced-motion:reduce){.toast span,.mt .bar i{transition:none}}
+.app-frame{display:block;width:100%;height:min(820px,85vh);border:0;background:#09090b}
+@media (max-width:760px){.app-frame{height:760px}}
+.app-bar .btn{text-decoration:none}
 
 /* Benefits */
 .benefits{display:grid;grid-template-columns:repeat(3,1fr);gap:1px;background:var(--line);border:1px solid var(--line);border-radius:14px;overflow:hidden}
@@ -336,10 +272,10 @@ footer .wrap{display:flex;justify-content:space-between;gap:16px;flex-wrap:wrap}
     </div>
     <div>
       <div class="tv" id="tv">
-        <div class="slide s1 on"><small data-t="sl1s"></small><b data-t="sl1"></b></div>
-        <div class="slide s2"><small data-t="sl2s"></small><b data-t="sl2"></b></div>
-        <div class="slide s3"><small data-t="sl3s"></small><b data-t="sl3"></b></div>
-        <div class="slide s4"><small data-t="sl4s"></small><b data-t="sl4"></b></div>
+        <div class="slide s1 on"><video src="app/media/mode.mp4" poster="app/media/mode.jpg" muted loop playsinline preload="auto" aria-hidden="true"></video><small data-t="sl1s"></small><b data-t="sl1"></b></div>
+        <div class="slide s2"><video src="app/media/burger.mp4" poster="app/media/burger.jpg" muted loop playsinline preload="auto" aria-hidden="true"></video><small data-t="sl2s"></small><b data-t="sl2"></b></div>
+        <div class="slide s3"><video src="app/media/kaffee.mp4" poster="app/media/kaffee.jpg" muted loop playsinline preload="auto" aria-hidden="true"></video><small data-t="sl3s"></small><b data-t="sl3"></b></div>
+        <div class="slide s4"><video src="app/media/cafe.mp4" poster="app/media/cafe.jpg" muted loop playsinline preload="auto" aria-hidden="true"></video><small data-t="sl4s"></small><b data-t="sl4"></b></div>
         <div class="prog" id="prog"></div>
       </div>
       <div class="stand"></div>
@@ -408,23 +344,11 @@ footer .wrap{display:flex;justify-content:space-between;gap:16px;flex-wrap:wrap}
       <p class="lead" data-t="demo_lead"></p>
     </div>
     <div class="tip"><svg class="i"><use href="#bulb"/></svg><span data-t="tip"></span></div>
-    <div class="app" id="app">
+    <div class="app">
       <div class="app-bar"><i></i><i></i><i></i><span class="ttl">VizPlay</span>
-        <div class="sp">
-          <button class="btn" type="button" id="d-reset"><svg class="i"><use href="#undo"/></svg><span data-t="reset"></span></button>
-          <button class="btn" type="button" id="d-full"><svg class="i"><use href="#expand"/></svg><span data-t="fullscreen"></span></button>
-        </div>
+        <div class="sp"><a class="btn" href="app/" target="_blank" rel="noopener"><svg class="i"><use href="#expand"/></svg><span data-t="fullscreen"></span></a></div>
       </div>
-      <div class="app-body">
-        <div class="side">
-          <div class="brand"><div class="logo"><svg viewBox="0 0 24 24"><path d="m7 4 12 8-12 8z"/></svg></div>VizPlay</div>
-          <button class="navb" type="button" data-view="displays"><svg class="i"><use href="#monitor"/></svg><span data-t="nav_displays"></span><span class="cnt" id="c-displays"></span></button>
-          <button class="navb" type="button" data-view="playlists"><svg class="i"><use href="#list"/></svg><span data-t="nav_playlists"></span><span class="cnt" id="c-playlists"></span></button>
-          <button class="navb" type="button" data-view="media"><svg class="i"><use href="#image"/></svg><span data-t="nav_media"></span><span class="cnt" id="c-media"></span></button>
-          <div class="badge" data-t="demo_badge"></div>
-        </div>
-        <div class="main" id="main" aria-live="polite"></div>
-      </div>
+      <iframe class="app-frame" src="app/" title="VizPlay Demo" loading="lazy"></iframe>
     </div>
   </div>
 </section>
@@ -563,9 +487,9 @@ const I18N = {
 de: {
   cta_demo: "Demo testen",
   demo_eyebrow: "Live-Demo", demo_h2: "Die App zum Ausprobieren",
-  demo_lead: "Eine vereinfachte Version der echten Oberfläche. Klicken Sie sich einfach durch – es kann nichts kaputtgehen.",
-  tip: "Tipp: In der Mediathek etwas hochladen, unter Playlists zur Playlist „Schaufenster“ hinzufügen – und unter Bildschirme zusehen, wie es erscheint.",
-  nav_displays: "Bildschirme", nav_playlists: "Playlists", nav_media: "Mediathek", demo_badge: "Demo-Modus", fullscreen: "Vollbild", reset: "Zurücksetzen",
+  demo_lead: "Das ist die echte VizPlay-Oberfläche mit Beispieldaten. Klicken Sie sich einfach durch – es kann nichts kaputtgehen.",
+  tip: "Tipp: Bei einem Display die Playlist wechseln, in der Mediathek eine Datei hochladen oder eine Playlist bearbeiten – die Vorschauen zeigen sofort, was auf dem Bildschirm läuft.",
+  nav_displays: "Bildschirme", nav_playlists: "Playlists", nav_media: "Mediathek", demo_badge: "Demo-Modus", fullscreen: "In neuem Fenster öffnen", reset: "Zurücksetzen",
   lbl_playlist: "Zeigt Playlist", empty_pl: "Diese Playlist ist noch leer. Fügen Sie unten ein Medium hinzu.", no_content: "Kein Inhalt",
   pl1: "Schaufenster", pl2: "Angebote", pl3: "Info & Service",
   m1: "Herbstkollektion", m2: "Angebot der Woche", m3: "Öffnungszeiten", m4: "Neuheiten", m5: "Kaffee-Aktion", m6: "Willkommen",
@@ -665,9 +589,9 @@ de: {
 en: {
   cta_demo: "Try the demo",
   demo_eyebrow: "Live demo", demo_h2: "Try the app yourself",
-  demo_lead: "A simplified version of the real interface. Just click around – nothing can break.",
-  tip: "Tip: upload something in the media library, add it to the “Shop window” playlist under Playlists – then watch it appear under Screens.",
-  nav_displays: "Screens", nav_playlists: "Playlists", nav_media: "Media library", demo_badge: "Demo mode", fullscreen: "Full screen", reset: "Reset",
+  demo_lead: "This is the real VizPlay interface with sample data (in German). Just click around – nothing can break.",
+  tip: "Tip: switch a display’s playlist, upload a file in the Mediathek or edit a playlist – the previews show instantly what the screen plays.",
+  nav_displays: "Screens", nav_playlists: "Playlists", nav_media: "Media library", demo_badge: "Demo mode", fullscreen: "Open in new window", reset: "Reset",
   lbl_playlist: "Shows playlist", empty_pl: "This playlist is still empty. Add a media item below.", no_content: "No content",
   pl1: "Shop window", pl2: "Offers", pl3: "Info & service",
   m1: "Autumn collection", m2: "Deal of the week", m3: "Opening hours", m4: "New arrivals", m5: "Coffee special", m6: "Welcome",
@@ -767,9 +691,9 @@ en: {
 ar: {
   cta_demo: "جرّب العرض التجريبي",
   demo_eyebrow: "عرض تجريبي مباشر", demo_h2: "جرّب التطبيق بنفسك",
-  demo_lead: "نسخة مبسطة من الواجهة الحقيقية. تنقّل واضغط كما تشاء – لا يمكن أن يتعطل شيء.",
-  tip: "نصيحة: ارفع ملفًا في مكتبة الوسائط، ثم أضفه إلى قائمة «الواجهة» في قوائم التشغيل – وشاهده يظهر في قسم الشاشات.",
-  nav_displays: "الشاشات", nav_playlists: "قوائم التشغيل", nav_media: "مكتبة الوسائط", demo_badge: "وضع تجريبي", fullscreen: "ملء الشاشة", reset: "إعادة الضبط",
+  demo_lead: "هذه واجهة VizPlay الحقيقية مع بيانات تجريبية (باللغة الألمانية). تنقّل واضغط كما تشاء – لا يمكن أن يتعطل شيء.",
+  tip: "نصيحة: غيّر قائمة التشغيل لإحدى الشاشات، أو ارفع ملفًا في مكتبة الوسائط، أو عدّل قائمة تشغيل – وتُظهر المعاينات فورًا ما يُعرض على الشاشة.",
+  nav_displays: "الشاشات", nav_playlists: "قوائم التشغيل", nav_media: "مكتبة الوسائط", demo_badge: "وضع تجريبي", fullscreen: "فتح في نافذة جديدة", reset: "إعادة الضبط",
   lbl_playlist: "قائمة التشغيل المعروضة", empty_pl: "هذه القائمة فارغة. أضف وسيطًا من الأسفل.", no_content: "لا يوجد محتوى",
   pl1: "الواجهة", pl2: "العروض", pl3: "معلومات وخدمات",
   m1: "تشكيلة الخريف", m2: "عرض الأسبوع", m3: "ساعات العمل", m4: "وصل حديثًا", m5: "عرض القهوة", m6: "أهلًا وسهلًا",
@@ -872,135 +796,11 @@ ar: {
   let lang = DEFAULT_LANG;
   try { const q = new URLSearchParams(location.search).get("lang"); if (I18N[q]) lang = q; } catch (e) {}
   const t = (k, v) => { let x = I18N[lang][k] ?? I18N.de[k] ?? k; if (v) for (const n in v) x = x.replace("{" + n + "}", v[n]); return x; };
-  const esc = x => String(x).replace(/[&<>"]/g, c => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;" }[c]));
-  const G = ["linear-gradient(135deg,#4338ca,#1e1b4b)", "linear-gradient(135deg,#c2410c,#3b1d06)", "linear-gradient(135deg,#0f766e,#022c22)",
-             "linear-gradient(135deg,#6d28d9,#2e1065)", "linear-gradient(135deg,#a16207,#291a02)", "linear-gradient(135deg,#be123c,#4c0519)",
-             "linear-gradient(135deg,#0369a1,#082f49)", "linear-gradient(135deg,#15803d,#052e16)"];
-
-  // --- Demo-Zustand ---
-  let S, view = "displays", openPl = "p1", tick = 0, upCount = 0;
-  const fresh = () => ({
-    media: [
-      { id: "m1", k: "m1", g: G[0], v: 1 }, { id: "m2", k: "m2", g: G[1], v: 0 }, { id: "m3", k: "m3", g: G[2], v: 0 },
-      { id: "m4", k: "m4", g: G[3], v: 1 }, { id: "m5", k: "m5", g: G[4], v: 0 }, { id: "m6", k: "m6", g: G[5], v: 0 },
-    ],
-    pls: [{ id: "p1", k: "pl1", items: ["m1", "m4", "m6"] }, { id: "p2", k: "pl2", items: ["m2", "m5"] }, { id: "p3", k: "pl3", items: ["m3"] }],
-    devs: [{ k: "d1", pl: "p1" }, { k: "d2", pl: "p2" }, { k: "d3", pl: "p1" }, { k: "d4", pl: "p3" }],
-    alarm: false,
-  });
-  S = fresh();
-  const media = id => S.media.find(m => m.id === id);
-  const pl = id => S.pls.find(p => p.id === id);
-  const plName = p => p.name ?? t(p.k);
-  const mName = m => m.name ?? t(m.k);
-  const main = document.getElementById("main"), app = document.getElementById("app");
-  let toastTimer;
-  const toast = msg => {
-    const el = main.querySelector(".toast span"); if (!el) return;
-    el.textContent = msg; el.classList.add("show");
-    clearTimeout(toastTimer); toastTimer = setTimeout(() => el.classList.remove("show"), 2600);
-  };
-  const icon = id => '<svg class="i"><use href="#' + id + '"/></svg>';
-
-  const vDisplays = () => {
-    const cards = S.devs.map((d, i) => {
-      const p = pl(d.pl), items = p.items.map(media).filter(Boolean);
-      let pv;
-      if (S.alarm) pv = '<div class="pv" style="background:linear-gradient(135deg,#b91c1c,#450a0a)"><b>' + esc(t("alarm_text")) + "</b></div>";
-      else if (!items.length) pv = '<div class="pv off">' + esc(t("no_content")) + "</div>";
-      else {
-        const idx = tick % items.length, m = items[idx];
-        const dots = items.length > 1 ? '<div class="dots">' + items.map((_, j) => '<i class="' + (j === idx ? "on" : "") + '"></i>').join("") + "</div>" : "";
-        pv = '<div class="pv" style="background:' + m.g + '">' + dots + "<small>" + esc(t(m.v ? "kind_video" : "kind_image")) + "</small><b>" + esc(mName(m)) + "</b></div>";
-      }
-      const opts = S.pls.map(x => '<option value="' + x.id + '"' + (x.id === d.pl ? " selected" : "") + ">" + esc(plName(x)) + "</option>").join("");
-      return '<div class="dcard">' + pv + '<div class="dbody"><div class="dtop"><b>' + esc(t(d.k)) + "</b>" +
-        (S.alarm ? '<span class="pill tk">' + esc(t("alarm_pill")) + "</span>" : '<span class="pill on">' + esc(t("online")) + "</span>") +
-        '</div><label class="flab" for="dsel' + i + '">' + esc(t("lbl_playlist")) + '</label><select class="sel" id="dsel' + i + '" data-dev="' + i + '">' + opts + "</select></div></div>";
-    }).join("");
-    return '<div class="mh"><h3>' + esc(t("nav_displays")) + '</h3><div class="sp"><button class="btn ' + (S.alarm ? "" : "danger") + '" type="button" data-act="alarm">' + icon("siren") + esc(t(S.alarm ? "alarm_off" : "alarm_on")) + "</button></div></div>" +
-      '<div class="dgrid">' + cards + "</div>";
-  };
-
-  const vPlaylists = () => {
-    if (!pl(openPl)) openPl = S.pls[0].id;
-    const list = S.pls.map(p => '<button class="plb" type="button" data-pl="' + p.id + '" aria-pressed="' + (p.id === openPl) + '">' + esc(plName(p)) + "<small>" + p.items.length + " " + esc(t("items")) + "</small></button>").join("");
-    const p = pl(openPl);
-    const on = S.devs.filter(d => d.pl === p.id).map(d => t(d.k));
-    const rows = p.items.map((id, i) => {
-      const m = media(id);
-      return '<div class="item"><div class="th" style="background:' + m.g + '"></div><span>' + esc(mName(m)) + "</span><small>" + esc(t(m.v ? "kind_video" : "kind_image")) + "</small>" +
-        '<button class="ib" type="button" data-mv="' + i + ':-1" aria-label="' + esc(t("up_btn")) + '"' + (i === 0 ? " disabled" : "") + ">" + icon("up") + "</button>" +
-        '<button class="ib" type="button" data-mv="' + i + ':1" aria-label="' + esc(t("down_btn")) + '"' + (i === p.items.length - 1 ? " disabled" : "") + ">" + icon("down") + "</button>" +
-        '<button class="ib" type="button" data-rm="' + i + '" aria-label="' + esc(t("remove")) + '">' + icon("x") + "</button></div>";
-    }).join("") || '<div class="empty">' + esc(t("empty_pl")) + "</div>";
-    const addOpts = '<option value="">' + esc(t("add_item")) + "</option>" + S.media.filter(m => !m.busy).map(m => '<option value="' + m.id + '">' + esc(mName(m)) + "</option>").join("");
-    return '<div class="mh"><h3>' + esc(t("nav_playlists")) + '</h3><div class="sp"><button class="btn primary" type="button" data-act="newpl">' + icon("plus") + esc(t("new_pl")) + "</button></div></div>" +
-      '<div class="plwrap"><div class="pllist">' + list + '</div><div class="pled"><h4>' + esc(plName(p)) + '</h4><div class="runs">' + esc(t("runs_on")) + " " + esc(on.length ? on.join(", ") : t("runs_none")) + "</div>" +
-      rows + '<label class="flab" for="addsel">' + esc(t("add_item")) + '</label><select class="sel" id="addsel">' + addOpts + "</select></div></div>";
-  };
-
-  const vMedia = () => {
-    const tiles = S.media.map(m => '<div class="mt"><div class="th" style="background:' + m.g + '">' + esc(mName(m)) + '</div><div class="mb"><span>' +
-      esc(m.busy ? t("uploading") : t(m.v ? "kind_video" : "kind_image")) + "</span></div>" + (m.busy ? '<div class="bar"><i style="width:' + m.busy + '%"></i></div>' : "") + "</div>").join("");
-    return '<div class="mh"><h3>' + esc(t("nav_media")) + '</h3><div class="sp"><button class="btn primary" type="button" data-act="upload">' + icon("upload") + esc(t("upload")) + "</button></div></div>" +
-      '<div class="mgrid">' + tiles + "</div>";
-  };
-
-  const render = () => {
-    const active = document.activeElement && main.contains(document.activeElement) ? document.activeElement.id : null;
-    main.innerHTML = ({ displays: vDisplays, playlists: vPlaylists, media: vMedia })[view]() + '<div class="toast"><span></span></div>';
-    if (active) document.getElementById(active)?.focus();
-    document.querySelectorAll(".navb").forEach(b => b.setAttribute("aria-current", b.dataset.view === view ? "page" : "false"));
-    document.getElementById("c-displays").textContent = S.devs.length;
-    document.getElementById("c-playlists").textContent = S.pls.length;
-    document.getElementById("c-media").textContent = S.media.length;
-  };
-  const screensFor = plId => S.devs.filter(d => d.pl === plId).length;
-
-  document.querySelectorAll(".navb").forEach(b => b.addEventListener("click", () => { view = b.dataset.view; render(); }));
-  main.addEventListener("click", e => {
-    const el = e.target.closest("button"); if (!el || el.disabled) return;
-    const p = pl(openPl);
-    if (el.dataset.act === "alarm") { S.alarm = !S.alarm; render(); toast(t(S.alarm ? "t_alarm" : "t_alarm_end")); }
-    else if (el.dataset.act === "newpl") {
-      const id = "p" + Date.now(); S.pls.push({ id, name: t("new_pl") + " " + (S.pls.length + 1), items: [] }); openPl = id; render(); toast(t("t_newpl"));
-    }
-    else if (el.dataset.pl) { openPl = el.dataset.pl; render(); }
-    else if (el.dataset.mv) {
-      const [i, dir] = el.dataset.mv.split(":").map(Number), j = i + dir;
-      [p.items[i], p.items[j]] = [p.items[j], p.items[i]]; render(); toast(t("t_order"));
-    }
-    else if (el.dataset.rm) { p.items.splice(Number(el.dataset.rm), 1); render(); toast(t("t_removed")); }
-    else if (el.dataset.act === "upload") {
-      const k = "up" + ((upCount % 4) + 1), m = { id: "u" + Date.now(), k, g: G[(6 + upCount) % G.length], v: upCount % 2, busy: 1 };
-      upCount++; S.media.unshift(m); render();
-      const step = () => {
-        m.busy = Math.min(100, m.busy + 12);
-        if (m.busy >= 100) { delete m.busy; if (view === "media") render(); toast(t("t_uploaded", { x: mName(m) })); }
-        else { if (view === "media") { const bar = main.querySelector(".mt .bar i"); if (bar) bar.style.width = m.busy + "%"; } setTimeout(step, 180); }
-      };
-      setTimeout(step, 180);
-    }
-  });
-  main.addEventListener("change", e => {
-    const el = e.target;
-    if (el.dataset.dev) { const d = S.devs[Number(el.dataset.dev)]; d.pl = el.value; render(); toast(t("t_assign", { d: t(d.k), p: plName(pl(d.pl)) })); }
-    else if (el.id === "addsel" && el.value) { const p = pl(openPl), m = media(el.value); p.items.push(m.id); render(); toast(t("t_added", { x: mName(m), n: screensFor(p.id) })); }
-  });
-  document.getElementById("d-reset").addEventListener("click", () => { S = fresh(); view = "displays"; openPl = "p1"; upCount = 0; render(); toast(t("t_reset")); });
-  document.getElementById("d-full").addEventListener("click", () => {
-    try { document.fullscreenElement ? document.exitFullscreen() : app.requestFullscreen(); } catch (e) {}
-  });
-  // Vorschau wechselt wie am echten TV
-  setInterval(() => { tick++; if (view === "displays" && !main.contains(document.activeElement)) render(); }, 3000);
-
   const apply = () => {
     const root = document.documentElement;
     root.lang = lang; root.dir = lang === "ar" ? "rtl" : "ltr";
     document.querySelectorAll("[data-t]").forEach(el => { el.innerHTML = t(el.dataset.t); });
     document.querySelectorAll(".langs button").forEach(b => b.setAttribute("aria-pressed", String(b.dataset.lang === lang)));
-    render();
   };
   document.querySelectorAll(".langs button").forEach(b => b.addEventListener("click", () => { lang = b.dataset.lang; apply(); }));
   apply();
@@ -1011,7 +811,9 @@ ar: {
   let cur = 0;
   const run = () => { if (reduce) return; prog.style.transition = "none"; prog.style.width = "0"; void prog.offsetWidth; prog.style.transition = "width " + dur + "ms linear"; prog.style.width = "100%"; };
   run();
-  setInterval(() => { slides[cur].classList.remove("on"); cur = (cur + 1) % slides.length; slides[cur].classList.add("on"); run(); }, dur);
+  const play = () => slides.forEach((sl, i) => { const v = sl.querySelector("video"); if (!v) return; if (i === cur) { v.currentTime = 0; v.play().catch(() => {}); } else v.pause(); });
+  play();
+  setInterval(() => { slides[cur].classList.remove("on"); cur = (cur + 1) % slides.length; slides[cur].classList.add("on"); play(); run(); }, dur);
 })();
 </script>
 </body>
