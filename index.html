@@ -1,0 +1,736 @@
+<!doctype html>
+<html lang="de">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="robots" content="noindex">
+<meta name="description" content="VizPlay – alle Bildschirme zentral steuern.">
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns=%27http://www.w3.org/2000/svg%27 viewBox=%270 0 24 24%27%3E%3Crect width=%2724%27 height=%2724%27 rx=%275%27 fill=%27%234f46e5%27/%3E%3Cpath d=%27m9 6 9 6-9 6z%27 fill=%27white%27/%3E%3C/svg%3E">
+<title>VizPlay</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Geist:wght@400;500;600;700&family=IBM+Plex+Sans+Arabic:wght@400;500;600;700&display=swap">
+<style>
+/* Bewusst dark-only: Markenwelt des VizPlay-Dashboards (Zinc + Indigo) */
+:root{
+  --bg:#09090b; --panel:#111114; --panel2:#18181b; --line:#27272a; --line2:#3f3f46;
+  --fg:#fafafa; --muted:#a1a1aa; --dim:#71717a;
+  --accent:#818cf8; --accent-strong:#4f46e5;
+  --ok:#22c55e; --warn:#f59e0b; --danger:#ef4444;
+  --sans:"Geist",ui-sans-serif,system-ui,-apple-system,"Segoe UI",sans-serif;
+  color-scheme:dark;
+}
+:root[dir="rtl"]{--sans:"IBM Plex Sans Arabic","Geist",ui-sans-serif,system-ui,sans-serif}
+*{box-sizing:border-box}
+body{margin:0;background:var(--bg);color:var(--fg);font:17px/1.6 var(--sans);-webkit-font-smoothing:antialiased}
+.wrap{max-width:1120px;margin:0 auto;padding-inline:24px}
+@media (max-width:560px){.wrap{padding-inline:16px}}
+h1,h2,h3{margin:0;text-wrap:balance;letter-spacing:-.02em;line-height:1.12}
+[dir="rtl"] h1,[dir="rtl"] h2,[dir="rtl"] h3{letter-spacing:0;line-height:1.35}
+p{margin:0}
+.eyebrow{font-size:13px;font-weight:600;color:var(--accent);letter-spacing:.04em}
+.lead{color:var(--muted);font-size:19px;max-width:60ch}
+svg.i{width:22px;height:22px;flex:none;stroke:currentColor;fill:none;stroke-width:1.75;stroke-linecap:round;stroke-linejoin:round}
+
+nav{position:sticky;top:env(safe-area-inset-top,0px);z-index:10;background:rgba(9,9,11,.85);backdrop-filter:blur(10px);border-bottom:1px solid var(--line)}
+nav .wrap{display:flex;align-items:center;gap:16px;height:60px}
+.brand{display:flex;align-items:center;gap:10px;font-weight:600;font-size:18px}
+.logo{width:28px;height:28px;border-radius:7px;background:var(--accent-strong);display:grid;place-items:center}
+.logo svg{width:14px;height:14px;fill:#fff}
+.langs{margin-inline-start:auto;display:flex;gap:4px;padding:3px;border:1px solid var(--line);border-radius:8px}
+.langs button{font:500 13px var(--sans);color:var(--muted);background:none;border:0;border-radius:6px;padding:6px 10px;cursor:pointer}
+.langs button[aria-pressed="true"]{background:var(--panel2);color:var(--fg)}
+.langs button:focus-visible,.btn:focus-visible{outline:2px solid var(--accent);outline-offset:2px}
+
+section{padding-block:96px;border-bottom:1px solid var(--line)}
+@media (max-width:560px){section{padding-block:64px}}
+.head{display:grid;gap:14px;margin-bottom:48px;max-width:760px}
+.head h2{font-size:clamp(30px,4.4vw,46px)}
+
+/* Hero */
+.hero{padding-block:80px 96px}
+.hero-grid{display:grid;grid-template-columns:1fr 1.05fr;gap:64px;align-items:center}
+@media (max-width:900px){.hero-grid{grid-template-columns:1fr;gap:48px}}
+.hero h1{font-size:clamp(40px,6.2vw,72px);font-weight:600;margin-block:16px 22px}
+.hero h1 em{font-style:normal;color:var(--accent)}
+.checks{display:grid;gap:10px;margin:28px 0 0;padding:0;list-style:none}
+.checks li{display:flex;gap:10px;align-items:center;color:var(--fg)}
+.checks .i{color:var(--ok);width:20px;height:20px}
+
+.tv{background:#000;border:12px solid #1c1c1f;border-radius:16px;aspect-ratio:16/9;position:relative;overflow:hidden;max-width:100%;box-shadow:0 40px 100px -40px rgba(79,70,229,.6)}
+.slide{position:absolute;inset:0;display:flex;flex-direction:column;justify-content:flex-end;gap:4px;padding:26px;opacity:0}
+.slide.on{opacity:1}
+.slide b{font-size:clamp(20px,3vw,34px);font-weight:600;line-height:1.15}
+.slide small{font-size:13px;opacity:.8}
+.s1{background:radial-gradient(120% 90% at 20% 10%,#4338ca 0,#1e1b4b 55%,#0b0a1f 100%)}
+.s2{background:linear-gradient(135deg,#0f766e,#022c22)}
+.s3{background:radial-gradient(90% 90% at 80% 20%,#c2410c,#3b1d06 70%)}
+.s4{background:linear-gradient(160deg,#be123c,#4c0519)}
+.prog{position:absolute;inset-inline-start:0;bottom:0;height:4px;background:#fff;opacity:.8;width:0}
+.stand{width:28%;height:14px;margin:0 auto;background:#1c1c1f;border-radius:0 0 8px 8px}
+.tv-cap{text-align:center;margin-top:18px;font-size:14px;color:var(--dim)}
+
+/* Problem */
+.pains{display:grid;grid-template-columns:repeat(4,1fr);gap:16px}
+@media (max-width:900px){.pains{grid-template-columns:repeat(2,1fr)}}
+@media (max-width:560px){.pains{grid-template-columns:1fr}}
+.pain{padding:24px;border:1px solid var(--line);border-radius:12px;display:grid;gap:10px;align-content:start}
+.pain .i{color:var(--dim)}
+.pain h3{font-size:18px;font-weight:600}
+.pain p{color:var(--muted);font-size:15px}
+.answer{margin-top:28px;padding:22px 26px;border-radius:12px;background:var(--accent-strong);font-size:19px;font-weight:500;display:flex;gap:14px;align-items:center}
+
+/* Steps */
+.steps{display:grid;grid-template-columns:repeat(3,1fr);gap:20px}
+@media (max-width:900px){.steps{grid-template-columns:1fr}}
+.step{background:var(--panel);border:1px solid var(--line);border-radius:14px;overflow:hidden;display:grid;grid-template-rows:auto 1fr}
+.step .vis{aspect-ratio:16/10;background:var(--panel2);border-bottom:1px solid var(--line);padding:22px;display:grid;place-items:center}
+.step .txt{padding:22px 24px 26px;display:grid;gap:8px;align-content:start}
+.step .n{font-size:13px;font-weight:600;color:var(--accent)}
+.step h3{font-size:21px;font-weight:600}
+.step p{color:var(--muted);font-size:15px}
+.mock{width:100%;max-width:280px;display:grid;gap:8px}
+.drop{border:1.5px dashed var(--line2);border-radius:10px;padding:18px;text-align:center;color:var(--muted);font-size:13px;display:grid;gap:6px;justify-items:center}
+.thumbs{display:flex;gap:6px}
+.thumbs i{flex:1;height:34px;border-radius:5px}
+.row{display:flex;align-items:center;gap:10px;background:var(--bg);border:1px solid var(--line);border-radius:8px;padding:8px 10px;font-size:13px}
+.row i{width:28px;height:18px;border-radius:3px;flex:none}
+.row span{flex:1}
+.row small{color:var(--dim)}
+.screens{display:grid;grid-template-columns:1fr 1fr;gap:8px;width:100%;max-width:280px}
+.scr{border:1px solid var(--line);border-radius:8px;padding:8px;font-size:12px;background:var(--bg);display:grid;gap:6px}
+.scr i{display:block;aspect-ratio:16/9;border-radius:4px;background:#1f1f23}
+.scr.sel{border-color:var(--accent);box-shadow:0 0 0 1px var(--accent)}
+.scr.sel i{background:linear-gradient(135deg,#4338ca,#1e1b4b)}
+
+/* Demo */
+.dash{border:1px solid var(--line);border-radius:14px;overflow:hidden;background:var(--panel)}
+.dash-top{display:flex;align-items:center;gap:12px;padding:14px 18px;border-bottom:1px solid var(--line);flex-wrap:wrap}
+.dash-top .t{font-weight:600}
+.dash-top .sp{margin-inline-start:auto;display:flex;gap:8px;flex-wrap:wrap}
+.btn{font:500 14px var(--sans);border-radius:8px;padding:9px 14px;border:1px solid var(--line2);background:var(--panel2);color:var(--fg);display:inline-flex;align-items:center;gap:8px;cursor:pointer}
+.btn:hover{background:#222226}
+.btn .i{width:16px;height:16px}
+.btn.danger{background:#7f1d1d;border-color:#991b1b}
+.btn.danger:hover{background:#991b1b}
+.grid{display:grid;grid-template-columns:repeat(4,1fr);gap:14px;padding:18px}
+@media (max-width:900px){.grid{grid-template-columns:repeat(2,1fr)}}
+@media (max-width:480px){.grid{grid-template-columns:1fr}}
+.dev{border:1px solid var(--line);border-radius:10px;background:var(--bg);overflow:hidden}
+.dev .pv{aspect-ratio:16/9;display:flex;align-items:flex-end;padding:10px;font-size:13px;font-weight:500;color:#fff;transition:background .3s}
+.dev .bd{padding:12px;display:grid;gap:4px;font-size:14px}
+.dev .bd div{display:flex;justify-content:space-between;gap:8px}
+.dev .bd small{color:var(--muted)}
+.pill{font-size:12px;padding:2px 8px;border-radius:999px}
+.pill.on{color:var(--ok);background:rgba(34,197,94,.1)}
+.pill.tk{color:var(--warn);background:rgba(245,158,11,.12)}
+.hint{margin-top:16px;font-size:15px;color:var(--muted);min-height:1.6em}
+
+/* Benefits */
+.benefits{display:grid;grid-template-columns:repeat(3,1fr);gap:1px;background:var(--line);border:1px solid var(--line);border-radius:14px;overflow:hidden}
+@media (max-width:900px){.benefits{grid-template-columns:repeat(2,1fr)}}
+@media (max-width:560px){.benefits{grid-template-columns:1fr}}
+.ben{background:var(--bg);padding:28px;display:grid;gap:10px;align-content:start}
+.ben .i{color:var(--accent)}
+.ben h3{font-size:18px;font-weight:600}
+.ben p{color:var(--muted);font-size:15px}
+
+/* Hardware */
+.hw{display:grid;grid-template-columns:1fr 1fr;gap:20px}
+@media (max-width:760px){.hw{grid-template-columns:1fr}}
+.card{border:1px solid var(--line);border-radius:14px;padding:30px;background:var(--panel);display:grid;gap:12px;align-content:start}
+.card .tag{justify-self:start;font-size:13px;font-weight:600;padding:4px 10px;border-radius:999px;background:rgba(129,140,248,.14);color:var(--accent)}
+.card h3{font-size:24px;font-weight:600}
+.card p{color:var(--muted)}
+
+/* Use cases */
+.uses{display:flex;flex-wrap:wrap;gap:12px}
+.use{display:flex;align-items:center;gap:12px;padding:14px 20px;border:1px solid var(--line);border-radius:999px;font-weight:500}
+.use .i{color:var(--accent);width:20px;height:20px}
+
+/* References */
+.refs{display:grid;grid-template-columns:1fr 1fr;gap:20px}
+@media (max-width:760px){.refs{grid-template-columns:1fr}}
+.ref{border:1px solid var(--line);border-radius:14px;padding:30px;display:grid;gap:16px;background:linear-gradient(180deg,var(--panel),var(--bg))}
+.ref .top{display:flex;align-items:center;gap:14px}
+.ref .mark{width:48px;height:48px;border-radius:10px;background:var(--panel2);border:1px solid var(--line2);display:grid;place-items:center;color:var(--accent)}
+.ref h3{font-size:22px;font-weight:600}
+.ref .kind{color:var(--dim);font-size:14px}
+.ref p{color:var(--muted)}
+.facts{display:flex;flex-wrap:wrap;gap:8px}
+.facts span{font-size:13px;padding:5px 10px;border-radius:999px;border:1px solid var(--line2);color:var(--fg)}
+.live{display:inline-flex;align-items:center;gap:8px;font-size:14px;color:var(--ok)}
+.live::before{content:"";width:8px;height:8px;border-radius:50%;background:var(--ok)}
+
+/* Compare */
+.cmp-wrap{border:1px solid var(--line);border-radius:14px;overflow-x:auto}
+.cmp{width:100%;min-width:560px;border-collapse:collapse}
+.cmp th,.cmp td{text-align:start;padding:16px 22px;border-bottom:1px solid var(--line)}
+.cmp tr:last-child td{border-bottom:0}
+.cmp th{font-weight:600;background:var(--panel2);font-size:15px}
+.cmp th.us{color:var(--accent)}
+.cmp td:first-child{color:var(--muted)}
+.cmp .y{color:var(--ok);font-weight:600}
+.cmp .n{color:var(--dim)}
+
+/* Close */
+.close{text-align:center;display:grid;gap:22px;justify-items:center}
+.close h2{font-size:clamp(32px,5vw,54px);max-width:18ch}
+.close .lead{margin-inline:auto}
+.sum{display:flex;flex-wrap:wrap;justify-content:center;gap:10px;margin-top:8px}
+.sum span{padding:10px 16px;border-radius:999px;background:var(--panel2);border:1px solid var(--line);font-weight:500}
+footer{padding-block:36px;color:var(--dim);font-size:14px}
+footer .wrap{display:flex;justify-content:space-between;gap:16px;flex-wrap:wrap}
+</style>
+</head>
+<body>
+
+<svg width="0" height="0" style="position:absolute" aria-hidden="true">
+  <symbol id="check" viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><path d="m8 12 3 3 5-6"/></symbol>
+  <symbol id="usb" viewBox="0 0 24 24"><rect x="7" y="2" width="10" height="8" rx="1"/><path d="M5 10h14v8a4 4 0 0 1-4 4H9a4 4 0 0 1-4-4z"/></symbol>
+  <symbol id="car" viewBox="0 0 24 24"><path d="M5 17h14M5 17a2 2 0 1 1-4 0v-5l2-5h14l4 5v5a2 2 0 1 1-4 0M5 17a2 2 0 1 0 4 0h6a2 2 0 1 0 4 0"/></symbol>
+  <symbol id="blank" viewBox="0 0 24 24"><rect x="2" y="3" width="20" height="14" rx="2" fill="currentColor" fill-opacity=".25"/><path d="M8 21h8M12 17v4"/></symbol>
+  <symbol id="euro" viewBox="0 0 24 24"><path d="M4 10h12M4 14h9M19 6a7.7 7.7 0 0 0-5.2-2A7.9 7.9 0 0 0 6 12c0 4.4 3.5 8 7.8 8 2 0 3.8-.8 5.2-2"/></symbol>
+  <symbol id="upload" viewBox="0 0 24 24"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4M17 8l-5-5-5 5M12 3v12"/></symbol>
+  <symbol id="clock" viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><path d="M12 6v6l4 2"/></symbol>
+  <symbol id="siren" viewBox="0 0 24 24"><path d="M7 18v-6a5 5 0 1 1 10 0v6M5 21a1 1 0 0 1-1-1v-1a2 2 0 0 1 2-2h12a2 2 0 0 1 2 2v1a1 1 0 0 1-1 1zM21 12h1M18.5 4.5 18 5M2 12h1M12 2v1M4.9 4.9l.7.7"/></symbol>
+  <symbol id="layers" viewBox="0 0 24 24"><path d="m12 2 10 5-10 5L2 7l10-5zM2 17l10 5 10-5M2 12l10 5 10-5"/></symbol>
+  <symbol id="music" viewBox="0 0 24 24"><path d="M9 18V5l12-2v13"/><circle cx="6" cy="18" r="3"/><circle cx="18" cy="16" r="3"/></symbol>
+  <symbol id="camera" viewBox="0 0 24 24"><path d="M14.5 4h-5L7 7H4a2 2 0 0 0-2 2v9a2 2 0 0 0 2 2h16a2 2 0 0 0 2-2V9a2 2 0 0 0-2-2h-3l-2.5-3z"/><circle cx="12" cy="13" r="3"/></symbol>
+  <symbol id="wifioff" viewBox="0 0 24 24"><path d="M12 20h.01M8.5 16.4a5 5 0 0 1 7 0M2 8.8a15 15 0 0 1 4.2-2.7M22 8.8a15 15 0 0 0-11.3-3.8M16.9 11.4a10 10 0 0 1 2.1 1.4M5 12.9a10 10 0 0 1 5.2-2.3M2 2l20 20"/></symbol>
+  <symbol id="phone" viewBox="0 0 24 24"><rect x="6" y="2" width="12" height="20" rx="2"/><path d="M11 18h2"/></symbol>
+  <symbol id="youtube" viewBox="0 0 24 24"><path d="M2.5 17a24 24 0 0 1 0-10 2 2 0 0 1 1.4-1.4 49.6 49.6 0 0 1 16.2 0A2 2 0 0 1 21.5 7a24 24 0 0 1 0 10 2 2 0 0 1-1.4 1.4 49.6 49.6 0 0 1-16.2 0A2 2 0 0 1 2.5 17"/><path d="m10 15 5-3-5-3z"/></symbol>
+  <symbol id="fuel" viewBox="0 0 24 24"><path d="M3 22h12M4 9h10M14 22V4a2 2 0 0 0-2-2H6a2 2 0 0 0-2 2v18M14 13h2a2 2 0 0 1 2 2v2a2 2 0 0 0 4 0V9.8a2 2 0 0 0-.6-1.4L18 5"/></symbol>
+  <symbol id="food" viewBox="0 0 24 24"><path d="M3 2v7c0 1.1.9 2 2 2h4a2 2 0 0 0 2-2V2M7 2v20M21 15V2a5 5 0 0 0-5 5v6c0 1.1.9 2 2 2h3zm0 0v7"/></symbol>
+  <symbol id="bag" viewBox="0 0 24 24"><path d="M6 2 3 6v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2V6l-3-4zM3 6h18M16 10a4 4 0 0 1-8 0"/></symbol>
+  <symbol id="cross" viewBox="0 0 24 24"><path d="M9 3h6v6h6v6h-6v6H9v-6H3V9h6z"/></symbol>
+  <symbol id="building" viewBox="0 0 24 24"><rect x="4" y="2" width="16" height="20" rx="2"/><path d="M9 22v-4h6v4M8 6h.01M16 6h.01M12 6h.01M12 10h.01M12 14h.01M16 10h.01M16 14h.01M8 10h.01M8 14h.01"/></symbol>
+  <symbol id="dumbbell" viewBox="0 0 24 24"><path d="M14.4 14.4 9.6 9.6M18.7 21.5a2 2 0 1 1-2.8-2.8l-1.8 1.8a2 2 0 1 1-2.8-2.8l6.3-6.3a2 2 0 1 1 2.8 2.8l-1.8 1.8a2 2 0 1 1 2.8 2.8zM21.5 21.5l-1.4-1.4M3.9 3.9 2.5 2.5M6.4 12.8a2 2 0 1 1-2.8-2.8l1.8-1.8a2 2 0 1 1-2.8-2.8l2.8-2.8a2 2 0 1 1 2.8 2.8l1.8-1.8a2 2 0 1 1 2.8 2.8z"/></symbol>
+  <symbol id="shield" viewBox="0 0 24 24"><path d="M20 13c0 5-3.5 7.5-7.7 9a1 1 0 0 1-.7 0C7.5 20.5 4 18 4 13V6a1 1 0 0 1 1-1c2 0 4.5-1.2 6.2-2.7a1.2 1.2 0 0 1 1.6 0C14.5 3.8 17 5 19 5a1 1 0 0 1 1 1z"/></symbol>
+  <symbol id="arrow" viewBox="0 0 24 24"><path d="M5 12h14M13 6l6 6-6 6"/></symbol>
+</svg>
+
+<nav>
+  <div class="wrap">
+    <div class="brand"><div class="logo"><svg viewBox="0 0 24 24"><path d="m7 4 12 8-12 8z"/></svg></div>VizPlay</div>
+    <div class="langs" role="group" aria-label="Sprache / Language / اللغة">
+      <button type="button" data-lang="de">DE</button>
+      <button type="button" data-lang="en">EN</button>
+      <button type="button" data-lang="ar">العربية</button>
+    </div>
+  </div>
+</nav>
+
+<header class="hero">
+  <div class="wrap hero-grid">
+    <div>
+      <div class="eyebrow" data-t="hero_eyebrow"></div>
+      <h1 data-t="hero_h1"></h1>
+      <p class="lead" data-t="hero_lead"></p>
+      <ul class="checks">
+        <li><svg class="i"><use href="#check"/></svg><span data-t="hero_c1"></span></li>
+        <li><svg class="i"><use href="#check"/></svg><span data-t="hero_c2"></span></li>
+        <li><svg class="i"><use href="#check"/></svg><span data-t="hero_c3"></span></li>
+      </ul>
+    </div>
+    <div>
+      <div class="tv" id="tv">
+        <div class="slide s1 on"><small data-t="sl1s"></small><b data-t="sl1"></b></div>
+        <div class="slide s2"><small data-t="sl2s"></small><b data-t="sl2"></b></div>
+        <div class="slide s3"><small data-t="sl3s"></small><b data-t="sl3"></b></div>
+        <div class="slide s4"><small data-t="sl4s"></small><b data-t="sl4"></b></div>
+        <div class="prog" id="prog"></div>
+      </div>
+      <div class="stand"></div>
+      <p class="tv-cap" data-t="tv_cap"></p>
+    </div>
+  </div>
+</header>
+
+<section>
+  <div class="wrap">
+    <div class="head">
+      <div class="eyebrow" data-t="pain_eyebrow"></div>
+      <h2 data-t="pain_h2"></h2>
+    </div>
+    <div class="pains">
+      <div class="pain"><svg class="i"><use href="#usb"/></svg><h3 data-t="p1h"></h3><p data-t="p1"></p></div>
+      <div class="pain"><svg class="i"><use href="#car"/></svg><h3 data-t="p2h"></h3><p data-t="p2"></p></div>
+      <div class="pain"><svg class="i"><use href="#blank"/></svg><h3 data-t="p3h"></h3><p data-t="p3"></p></div>
+      <div class="pain"><svg class="i"><use href="#euro"/></svg><h3 data-t="p4h"></h3><p data-t="p4"></p></div>
+    </div>
+    <div class="answer"><svg class="i"><use href="#arrow"/></svg><span data-t="answer"></span></div>
+  </div>
+</section>
+
+<section>
+  <div class="wrap">
+    <div class="head">
+      <div class="eyebrow" data-t="steps_eyebrow"></div>
+      <h2 data-t="steps_h2"></h2>
+      <p class="lead" data-t="steps_lead"></p>
+    </div>
+    <div class="steps">
+      <div class="step">
+        <div class="vis"><div class="mock">
+          <div class="drop"><svg class="i"><use href="#upload"/></svg><span data-t="m_drop"></span></div>
+          <div class="thumbs"><i style="background:linear-gradient(135deg,#4338ca,#1e1b4b)"></i><i style="background:linear-gradient(135deg,#0f766e,#022c22)"></i><i style="background:linear-gradient(135deg,#c2410c,#3b1d06)"></i></div>
+        </div></div>
+        <div class="txt"><span class="n" data-t="s1n"></span><h3 data-t="s1h"></h3><p data-t="s1"></p></div>
+      </div>
+      <div class="step">
+        <div class="vis"><div class="mock">
+          <div class="row"><i style="background:linear-gradient(135deg,#4338ca,#1e1b4b)"></i><span data-t="m_r1"></span><small>0:15</small></div>
+          <div class="row"><i style="background:linear-gradient(135deg,#0f766e,#022c22)"></i><span data-t="m_r2"></span><small>0:10</small></div>
+          <div class="row"><i style="background:linear-gradient(135deg,#c2410c,#3b1d06)"></i><span data-t="m_r3"></span><small>0:20</small></div>
+        </div></div>
+        <div class="txt"><span class="n" data-t="s2n"></span><h3 data-t="s2h"></h3><p data-t="s2"></p></div>
+      </div>
+      <div class="step">
+        <div class="vis"><div class="screens">
+          <div class="scr sel"><i></i><span data-t="m_sc1"></span></div>
+          <div class="scr sel"><i></i><span data-t="m_sc2"></span></div>
+          <div class="scr"><i></i><span data-t="m_sc3"></span></div>
+          <div class="scr sel"><i></i><span data-t="m_sc4"></span></div>
+        </div></div>
+        <div class="txt"><span class="n" data-t="s3n"></span><h3 data-t="s3h"></h3><p data-t="s3"></p></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section>
+  <div class="wrap">
+    <div class="head">
+      <div class="eyebrow" data-t="demo_eyebrow"></div>
+      <h2 data-t="demo_h2"></h2>
+      <p class="lead" data-t="demo_lead"></p>
+    </div>
+    <div class="dash">
+      <div class="dash-top">
+        <span class="t" data-t="demo_title"></span>
+        <div class="sp">
+          <button class="btn" id="btn-switch" type="button"><svg class="i"><use href="#clock"/></svg><span data-t="btn_switch"></span></button>
+          <button class="btn danger" id="btn-alarm" type="button"><svg class="i"><use href="#siren"/></svg><span id="alarm-label"></span></button>
+        </div>
+      </div>
+      <div class="grid" id="grid"></div>
+    </div>
+    <p class="hint" id="hint" aria-live="polite"></p>
+  </div>
+</section>
+
+<section>
+  <div class="wrap">
+    <div class="head">
+      <div class="eyebrow" data-t="ben_eyebrow"></div>
+      <h2 data-t="ben_h2"></h2>
+    </div>
+    <div class="benefits">
+      <div class="ben"><svg class="i"><use href="#clock"/></svg><h3 data-t="b1h"></h3><p data-t="b1"></p></div>
+      <div class="ben"><svg class="i"><use href="#siren"/></svg><h3 data-t="b2h"></h3><p data-t="b2"></p></div>
+      <div class="ben"><svg class="i"><use href="#wifioff"/></svg><h3 data-t="b3h"></h3><p data-t="b3"></p></div>
+      <div class="ben"><svg class="i"><use href="#camera"/></svg><h3 data-t="b4h"></h3><p data-t="b4"></p></div>
+      <div class="ben"><svg class="i"><use href="#layers"/></svg><h3 data-t="b5h"></h3><p data-t="b5"></p></div>
+      <div class="ben"><svg class="i"><use href="#music"/></svg><h3 data-t="b6h"></h3><p data-t="b6"></p></div>
+      <div class="ben"><svg class="i"><use href="#youtube"/></svg><h3 data-t="b7h"></h3><p data-t="b7"></p></div>
+      <div class="ben"><svg class="i"><use href="#phone"/></svg><h3 data-t="b8h"></h3><p data-t="b8"></p></div>
+      <div class="ben"><svg class="i"><use href="#shield"/></svg><h3 data-t="b9h"></h3><p data-t="b9"></p></div>
+    </div>
+  </div>
+</section>
+
+<section>
+  <div class="wrap">
+    <div class="head">
+      <div class="eyebrow" data-t="hw_eyebrow"></div>
+      <h2 data-t="hw_h2"></h2>
+    </div>
+    <div class="hw">
+      <div class="card"><span class="tag" data-t="hw1tag"></span><h3 data-t="hw1h"></h3><p data-t="hw1"></p></div>
+      <div class="card"><span class="tag" data-t="hw2tag"></span><h3 data-t="hw2h"></h3><p data-t="hw2"></p></div>
+    </div>
+  </div>
+</section>
+
+<section>
+  <div class="wrap">
+    <div class="head">
+      <div class="eyebrow" data-t="use_eyebrow"></div>
+      <h2 data-t="use_h2"></h2>
+    </div>
+    <div class="uses">
+      <span class="use"><svg class="i"><use href="#fuel"/></svg><span data-t="u1"></span></span>
+      <span class="use"><svg class="i"><use href="#food"/></svg><span data-t="u2"></span></span>
+      <span class="use"><svg class="i"><use href="#bag"/></svg><span data-t="u3"></span></span>
+      <span class="use"><svg class="i"><use href="#cross"/></svg><span data-t="u4"></span></span>
+      <span class="use"><svg class="i"><use href="#building"/></svg><span data-t="u5"></span></span>
+      <span class="use"><svg class="i"><use href="#dumbbell"/></svg><span data-t="u6"></span></span>
+    </div>
+  </div>
+</section>
+
+<section>
+  <div class="wrap">
+    <div class="head">
+      <div class="eyebrow" data-t="ref_eyebrow"></div>
+      <h2 data-t="ref_h2"></h2>
+    </div>
+    <div class="refs">
+      <div class="ref">
+        <div class="top"><div class="mark"><svg class="i"><use href="#building"/></svg></div><div><h3 data-t="r1name"></h3><div class="kind" data-t="r1kind"></div></div></div>
+        <p data-t="r1"></p>
+        <div class="facts"><span data-t="r1f1"></span><span data-t="r1f2"></span><span data-t="r1f3"></span></div>
+        <span class="live" data-t="live"></span>
+      </div>
+      <div class="ref">
+        <div class="top"><div class="mark"><svg class="i"><use href="#fuel"/></svg></div><div><h3 data-t="r2name"></h3><div class="kind" data-t="r2kind"></div></div></div>
+        <p data-t="r2"></p>
+        <div class="facts"><span data-t="r2f1"></span><span data-t="r2f2"></span><span data-t="r2f3"></span></div>
+        <span class="live" data-t="live"></span>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section>
+  <div class="wrap">
+    <div class="head">
+      <div class="eyebrow" data-t="cmp_eyebrow"></div>
+      <h2 data-t="cmp_h2"></h2>
+    </div>
+    <div class="cmp-wrap">
+      <table class="cmp">
+        <thead><tr><th></th><th class="us">VizPlay</th><th data-t="cmp_them"></th></tr></thead>
+        <tbody>
+          <tr><td data-t="c1"></td><td class="y" data-t="c1a"></td><td class="n" data-t="c1b"></td></tr>
+          <tr><td data-t="c2"></td><td class="y" data-t="yes"></td><td class="n" data-t="c2b"></td></tr>
+          <tr><td data-t="c3"></td><td class="y" data-t="c3a"></td><td class="n" data-t="c3b"></td></tr>
+          <tr><td data-t="c4"></td><td class="y" data-t="yes"></td><td class="n" data-t="c4b"></td></tr>
+          <tr><td data-t="c5"></td><td class="y" data-t="c5a"></td><td class="n" data-t="c5b"></td></tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+</section>
+
+<section style="border-bottom:0">
+  <div class="wrap close">
+    <div class="eyebrow" data-t="close_eyebrow"></div>
+    <h2 data-t="close_h2"></h2>
+    <p class="lead" data-t="close_lead"></p>
+    <div class="sum"><span data-t="sum1"></span><span data-t="sum2"></span><span data-t="sum3"></span><span data-t="sum4"></span></div>
+  </div>
+</section>
+
+<footer><div class="wrap"><span data-t="footer"></span><span>Vizionists</span></div></footer>
+
+<script>
+const DEFAULT_LANG = "de";
+const I18N = {
+de: {
+  hero_eyebrow: "Digital Signage von Vizionists",
+  hero_h1: "Alle Bildschirme. <em>Ein Klick.</em>",
+  hero_lead: "Mit VizPlay steuern Sie Werbung, Menüs und Infos auf allen Bildschirmen zentral vom Computer oder Handy aus. Neue Inhalte sind in Sekunden auf dem TV – ohne USB-Stick, ohne Anfahrt, ohne Abo.",
+  hero_c1: "In 3 Schritten zum laufenden Bildschirm",
+  hero_c2: "Läuft auch weiter, wenn das Internet ausfällt",
+  hero_c3: "Keine monatlichen Lizenzgebühren",
+  sl1s: "Bildschirm 1 · Eingang", sl1: "Neue Herbstkollektion",
+  sl2s: "Bildschirm 1 · Eingang", sl2: "Heute geöffnet bis 20 Uhr",
+  sl3s: "Bildschirm 1 · Eingang", sl3: "Angebot der Woche: −20 %",
+  sl4s: "Bildschirm 1 · Eingang", sl4: "Jetzt auch per App bestellen",
+  tv_cap: "So sieht es auf dem TV aus: Inhalt folgt auf Inhalt, ohne schwarzes Bild dazwischen.",
+  pain_eyebrow: "Das Problem heute",
+  pain_h2: "Bildschirme sind da. Aber sie aktuell zu halten, kostet Zeit und Nerven.",
+  p1h: "USB-Sticks", p1: "Jede Änderung heißt: Datei auf Stick, hinfahren, einstecken, hoffen, dass es klappt.",
+  p2h: "Anfahrten", p2: "Für ein neues Angebot muss jemand vor Ort sein – bei mehreren Filialen gleich mehrfach.",
+  p3h: "Schwarze Bildschirme", p3: "Ein hängender Player fällt oft erst auf, wenn der Kunde sich beschwert.",
+  p4h: "Teure Abos", p4: "Übliche Signage-Software kostet monatlich pro Bildschirm – jahrelang.",
+  answer: "VizPlay löst alle vier Probleme mit einer einzigen Oberfläche.",
+  steps_eyebrow: "So einfach geht's",
+  steps_h2: "Drei Schritte. Kein Fachwissen nötig.",
+  steps_lead: "Wer ein Foto per WhatsApp verschicken kann, kann auch VizPlay bedienen.",
+  m_drop: "Dateien hierher ziehen",
+  s1n: "Schritt 1", s1h: "Hochladen", s1: "Bilder und Videos einfach in den Browser ziehen. VizPlay passt sie automatisch für den Bildschirm an.",
+  m_r1: "Herbstkollektion", m_r2: "Öffnungszeiten", m_r3: "Angebot der Woche",
+  s2n: "Schritt 2", s2h: "Zusammenstellen", s2: "Reihenfolge per Maus festlegen, Anzeigedauer wählen – fertig ist die Playlist.",
+  m_sc1: "Eingang", m_sc2: "Kasse", m_sc3: "Lager", m_sc4: "Schaufenster",
+  s3n: "Schritt 3", s3h: "Bildschirme wählen", s3: "Anklicken, auf welchen Bildschirmen es laufen soll. Wenige Sekunden später ist es live.",
+  demo_eyebrow: "Zum Ausprobieren",
+  demo_h2: "Alles im Blick – von überall",
+  demo_lead: "So sieht die Übersicht aus. Probieren Sie die beiden Knöpfe aus.",
+  demo_title: "Meine Bildschirme",
+  btn_switch: "Abendprogramm starten",
+  alarm_on: "Durchsage senden", alarm_off: "Durchsage beenden",
+  hint_start: "Beispielansicht mit vier Bildschirmen.",
+  hint_alarm: "Alle Bildschirme zeigen sofort die Durchsage. Beim Beenden läuft das normale Programm automatisch weiter.",
+  hint_alarm_end: "Durchsage beendet – jeder Bildschirm zeigt wieder sein Programm.",
+  hint_eve: "Abendprogramm aktiv. Das lässt sich auch automatisch per Zeitplan einstellen.",
+  hint_day: "Zurück zum Tagesprogramm.",
+  online: "online", alarm_pill: "Durchsage",
+  alarm_text: "Wichtige Durchsage: Bitte Ausgang benutzen",
+  program: "Programm", day: "Tag", eve: "Abend",
+  d1: "Eingang", d2: "Kasse", d3: "Schaufenster", d4: "Wartebereich",
+  t1: "Herbstkollektion", t2: "Angebot der Woche", t3: "Neuheiten", t4: "Öffnungszeiten",
+  e1: "Heute bis 20 Uhr", e2: "Happy Hour 18–20 Uhr", e3: "Morgen: Neueröffnung", e4: "Danke für Ihren Besuch",
+  ben_eyebrow: "Was VizPlay kann",
+  ben_h2: "Alles, was man im Alltag wirklich braucht",
+  b1h: "Zeitpläne", b1: "Morgens Frühstück, mittags Mittagstisch, nachts Bildschirm aus – läuft automatisch.",
+  b2h: "Sofort-Durchsage", b2: "Ein Klick und eine wichtige Meldung erscheint auf allen oder ausgewählten Bildschirmen.",
+  b3h: "Ausfallsicher", b3: "Inhalte werden auf dem Gerät gespeichert. Fällt das Internet aus, läuft alles weiter.",
+  b4h: "Fernkontrolle", b4: "Per Live-Bild sehen, was gerade wirklich auf dem Bildschirm läuft – ohne hinzufahren.",
+  b5h: "Videowände", b5: "Mehrere Bildschirme laufen exakt gleichzeitig – ideal für Effekte über mehrere TVs.",
+  b6h: "Hintergrundmusik", b6: "Eigene Musik pro Standort, unabhängig von den Videos.",
+  b7h: "YouTube & Live", b7: "Einfach einen Link einfügen und er läuft auf dem Bildschirm.",
+  b8h: "Vom Handy aus", b8: "Die Oberfläche funktioniert am Computer genauso wie unterwegs auf dem Smartphone.",
+  b9h: "Daten bleiben im Haus", b9: "Keine fremde Cloud: Alles läuft auf eigener Hardware beim Kunden.",
+  hw_eyebrow: "Passt zu jedem Bildschirm",
+  hw_h2: "Vorhandene TVs weiter nutzen",
+  hw1tag: "Smart-TV", hw1h: "App direkt auf dem Fernseher", hw1: "Moderne Android-/Google-TVs (z. B. TCL) brauchen nichts extra: Die VizPlay-App wird installiert und der TV startet direkt ins Programm.",
+  hw2tag: "Jeder andere TV", hw2h: "Kleine Box am HDMI-Anschluss", hw2: "Ältere Fernseher oder Monitore bekommen einen kleinen Mini-Computer hinten ans Gerät – unsichtbar, stromsparend, günstig.",
+  use_eyebrow: "Einsatzbereiche",
+  use_h2: "Überall, wo Kunden auf einen Bildschirm schauen",
+  u1: "Tankstellen", u2: "Gastronomie & Menüboards", u3: "Einzelhandel & Schaufenster", u4: "Praxen & Apotheken", u5: "Büros & Empfang", u6: "Fitnessstudios",
+  ref_eyebrow: "Referenzen",
+  ref_h2: "Bereits im täglichen Einsatz",
+  r1name: "Gewerbekunde", r1kind: "Mehrere Bildschirme, ein Standort",
+  r1: "Hier laufen mehrere Bildschirme mit VizPlay – überwiegend Smart-TVs mit der App, zentral aus einer Oberfläche gesteuert. Inhalte werden per Klick getauscht, ohne jemanden vor Ort.",
+  r1f1: "Smart-TVs mit App", r1f2: "Zentrale Steuerung", r1f3: "Fernwartung",
+  r2name: "Tankstelle", r2kind: "Betrieb rund um die Uhr",
+  r2: "An einer Tankstelle zeigen die Bildschirme Angebote und Infos rund um die Uhr. Änderungen erfolgen aus der Ferne, der Betrieb läuft auch bei Internetstörungen weiter.",
+  r2f1: "Betrieb rund um die Uhr", r2f2: "Änderungen aus der Ferne", r2f3: "Ausfallsicher",
+  live: "Live im Einsatz",
+  cmp_eyebrow: "Im Vergleich",
+  cmp_h2: "VizPlay gegenüber typischen Abo-Lösungen",
+  cmp_them: "Typische Abo-Software",
+  c1: "Laufende Kosten", c1a: "Keine Lizenzgebühren", c1b: "Monatlich pro Bildschirm",
+  c2: "Läuft ohne Internet weiter", c2b: "Oft eingeschränkt",
+  c3: "Wo liegen die Daten?", c3a: "Beim Kunden", c3b: "In fremder Cloud",
+  c4: "Smart-TVs ohne Zusatzgerät", c4b: "Je nach Anbieter",
+  c5: "Anpassungen & Support", c5a: "Direkt von uns", c5b: "Ticket beim Anbieter",
+  yes: "Ja",
+  close_eyebrow: "Kurz gesagt",
+  close_h2: "Ein eigenes Produkt, das bereits läuft.",
+  close_lead: "VizPlay ist fertig entwickelt, bei Kunden im Einsatz und kann ohne Lizenzkosten an weitere Kunden ausgerollt werden.",
+  sum1: "Einfach zu bedienen", sum2: "Ausfallsicher", sum3: "Keine Abo-Kosten", sum4: "Bereits bei Kunden live",
+  footer: "VizPlay · Digital Signage von Vizionists"
+},
+en: {
+  hero_eyebrow: "Digital signage by Vizionists",
+  hero_h1: "Every screen. <em>One click.</em>",
+  hero_lead: "With VizPlay you manage ads, menus and information on every screen centrally, from a computer or phone. New content is on the TV within seconds – no USB stick, no site visit, no subscription.",
+  hero_c1: "A running screen in 3 steps",
+  hero_c2: "Keeps playing when the internet goes down",
+  hero_c3: "No monthly license fees",
+  sl1s: "Screen 1 · Entrance", sl1: "New autumn collection",
+  sl2s: "Screen 1 · Entrance", sl2: "Open today until 8 pm",
+  sl3s: "Screen 1 · Entrance", sl3: "Deal of the week: −20%",
+  sl4s: "Screen 1 · Entrance", sl4: "Now also order in the app",
+  tv_cap: "This is what the TV shows: one item after another, never a black screen in between.",
+  pain_eyebrow: "The problem today",
+  pain_h2: "The screens are there. Keeping them up to date costs time and nerves.",
+  p1h: "USB sticks", p1: "Every change means: file onto a stick, drive over, plug it in, hope it works.",
+  p2h: "Site visits", p2: "A new offer needs someone on site – several times over with multiple locations.",
+  p3h: "Black screens", p3: "A frozen player often goes unnoticed until a customer complains.",
+  p4h: "Costly subscriptions", p4: "Typical signage software charges monthly per screen – for years.",
+  answer: "VizPlay solves all four with a single interface.",
+  steps_eyebrow: "This easy",
+  steps_h2: "Three steps. No expertise needed.",
+  steps_lead: "If you can send a photo on WhatsApp, you can use VizPlay.",
+  m_drop: "Drag files here",
+  s1n: "Step 1", s1h: "Upload", s1: "Drag images and videos into the browser. VizPlay adapts them for the screen automatically.",
+  m_r1: "Autumn collection", m_r2: "Opening hours", m_r3: "Deal of the week",
+  s2n: "Step 2", s2h: "Arrange", s2: "Set the order with the mouse, choose how long each shows – your playlist is ready.",
+  m_sc1: "Entrance", m_sc2: "Checkout", m_sc3: "Stockroom", m_sc4: "Shop window",
+  s3n: "Step 3", s3h: "Pick screens", s3: "Click which screens should show it. A few seconds later it's live.",
+  demo_eyebrow: "Try it",
+  demo_h2: "Everything at a glance – from anywhere",
+  demo_lead: "This is the overview. Try the two buttons.",
+  demo_title: "My screens",
+  btn_switch: "Start evening program",
+  alarm_on: "Send announcement", alarm_off: "End announcement",
+  hint_start: "Sample view with four screens.",
+  hint_alarm: "Every screen shows the announcement immediately. When it ends, the normal program resumes automatically.",
+  hint_alarm_end: "Announcement ended – every screen is back on its program.",
+  hint_eve: "Evening program active. This can also switch automatically on a schedule.",
+  hint_day: "Back to the daytime program.",
+  online: "online", alarm_pill: "Announcement",
+  alarm_text: "Important notice: please use the exit",
+  program: "Program", day: "Day", eve: "Evening",
+  d1: "Entrance", d2: "Checkout", d3: "Shop window", d4: "Waiting area",
+  t1: "Autumn collection", t2: "Deal of the week", t3: "New arrivals", t4: "Opening hours",
+  e1: "Open until 8 pm", e2: "Happy hour 6–8 pm", e3: "Tomorrow: grand opening", e4: "Thanks for visiting",
+  ben_eyebrow: "What VizPlay does",
+  ben_h2: "Everything you actually need day to day",
+  b1h: "Schedules", b1: "Breakfast in the morning, lunch menu at noon, screen off at night – automatically.",
+  b2h: "Instant announcements", b2: "One click and an important message appears on all or selected screens.",
+  b3h: "Fail-safe", b3: "Content is stored on the device. If the internet drops, everything keeps playing.",
+  b4h: "Remote check", b4: "See a live picture of what's really on the screen – without driving there.",
+  b5h: "Video walls", b5: "Several screens play in perfect sync – ideal for effects across multiple TVs.",
+  b6h: "Background music", b6: "Its own music per location, independent of the videos.",
+  b7h: "YouTube & live", b7: "Just paste a link and it plays on the screen.",
+  b8h: "From your phone", b8: "The interface works on a computer just as well as on a smartphone on the go.",
+  b9h: "Data stays in-house", b9: "No third-party cloud: everything runs on the customer's own hardware.",
+  hw_eyebrow: "Works with any screen",
+  hw_h2: "Keep using the TVs you have",
+  hw1tag: "Smart TV", hw1h: "App right on the TV", hw1: "Modern Android / Google TVs (e.g. TCL) need nothing extra: install the VizPlay app and the TV starts straight into the program.",
+  hw2tag: "Any other TV", hw2h: "Small box on the HDMI port", hw2: "Older TVs or monitors get a small mini computer on the back – invisible, low-power, inexpensive.",
+  use_eyebrow: "Where it fits",
+  use_h2: "Anywhere customers look at a screen",
+  u1: "Gas stations", u2: "Restaurants & menu boards", u3: "Retail & shop windows", u4: "Clinics & pharmacies", u5: "Offices & reception", u6: "Gyms",
+  ref_eyebrow: "References",
+  ref_h2: "Already in daily use",
+  r1name: "Business customer", r1kind: "Multiple screens, one location",
+  r1: "Here, several screens run on VizPlay – mostly smart TVs with the app, all managed from one interface. Content is swapped with a click, with nobody needed on site.",
+  r1f1: "Smart TVs with app", r1f2: "Central control", r1f3: "Remote maintenance",
+  r2name: "Gas station", r2kind: "Open around the clock",
+  r2: "At a gas station, the screens show offers and information around the clock. Changes are made remotely, and operation continues even during internet outages.",
+  r2f1: "Runs 24/7", r2f2: "Remote changes", r2f3: "Fail-safe",
+  live: "Live in operation",
+  cmp_eyebrow: "Comparison",
+  cmp_h2: "VizPlay versus typical subscription solutions",
+  cmp_them: "Typical subscription software",
+  c1: "Running costs", c1a: "No license fees", c1b: "Monthly per screen",
+  c2: "Keeps playing without internet", c2b: "Often limited",
+  c3: "Where is the data?", c3a: "With the customer", c3b: "Third-party cloud",
+  c4: "Smart TVs without extra device", c4b: "Depends on vendor",
+  c5: "Customization & support", c5a: "Directly from us", c5b: "Ticket with the vendor",
+  yes: "Yes",
+  close_eyebrow: "In short",
+  close_h2: "Our own product, already up and running.",
+  close_lead: "VizPlay is fully developed, in use at customers, and can be rolled out to more customers without license costs.",
+  sum1: "Easy to use", sum2: "Fail-safe", sum3: "No subscription costs", sum4: "Already live at customers",
+  footer: "VizPlay · Digital signage by Vizionists"
+},
+ar: {
+  hero_eyebrow: "اللافتات الرقمية من Vizionists",
+  hero_h1: "كل الشاشات. <em>بنقرة واحدة.</em>",
+  hero_lead: "مع VizPlay تتحكم بالإعلانات وقوائم الطعام والمعلومات على جميع الشاشات مركزيًا من الحاسوب أو الهاتف. يظهر المحتوى الجديد على التلفاز خلال ثوانٍ – بدون فلاشة، وبدون تنقّل، وبدون اشتراك.",
+  hero_c1: "شاشة جاهزة للعرض في 3 خطوات",
+  hero_c2: "يستمر العرض حتى عند انقطاع الإنترنت",
+  hero_c3: "بدون رسوم ترخيص شهرية",
+  sl1s: "الشاشة 1 · المدخل", sl1: "تشكيلة الخريف الجديدة",
+  sl2s: "الشاشة 1 · المدخل", sl2: "مفتوح اليوم حتى الساعة 8 مساءً",
+  sl3s: "الشاشة 1 · المدخل", sl3: "عرض الأسبوع: خصم 20٪",
+  sl4s: "الشاشة 1 · المدخل", sl4: "اطلب الآن عبر التطبيق أيضًا",
+  tv_cap: "هكذا يبدو العرض على التلفاز: محتوى يتبع محتوى، دون أي شاشة سوداء بينهما.",
+  pain_eyebrow: "المشكلة اليوم",
+  pain_h2: "الشاشات موجودة، لكن تحديثها باستمرار يستهلك الوقت والجهد.",
+  p1h: "الفلاشات", p1: "كل تغيير يعني: نسخ الملف على فلاشة، ثم الذهاب إلى المكان، وتوصيلها، على أمل أن ينجح الأمر.",
+  p2h: "التنقّل", p2: "أي عرض جديد يحتاج إلى شخص في الموقع – ومرات عديدة إذا كانت هناك عدة فروع.",
+  p3h: "الشاشات السوداء", p3: "غالبًا لا يُلاحظ تعطّل المشغّل إلا عندما يشتكي أحد الزبائن.",
+  p4h: "اشتراكات مكلفة", p4: "برامج اللافتات المعتادة تُدفع شهريًا عن كل شاشة – لسنوات.",
+  answer: "VizPlay يحل المشاكل الأربع من خلال واجهة واحدة.",
+  steps_eyebrow: "بهذه السهولة",
+  steps_h2: "ثلاث خطوات. دون أي خبرة تقنية.",
+  steps_lead: "من يستطيع إرسال صورة عبر واتساب، يستطيع استخدام VizPlay.",
+  m_drop: "اسحب الملفات إلى هنا",
+  s1n: "الخطوة 1", s1h: "الرفع", s1: "اسحب الصور والفيديوهات إلى المتصفح، ويُكيّفها VizPlay تلقائيًا لتناسب الشاشة.",
+  m_r1: "تشكيلة الخريف", m_r2: "ساعات العمل", m_r3: "عرض الأسبوع",
+  s2n: "الخطوة 2", s2h: "الترتيب", s2: "حدّد الترتيب بالماوس واختر مدة العرض – وتصبح قائمة التشغيل جاهزة.",
+  m_sc1: "المدخل", m_sc2: "الصندوق", m_sc3: "المستودع", m_sc4: "الواجهة",
+  s3n: "الخطوة 3", s3h: "اختيار الشاشات", s3: "انقر على الشاشات التي تريد العرض عليها، وبعد ثوانٍ قليلة يبدأ العرض.",
+  demo_eyebrow: "جرّبه بنفسك",
+  demo_h2: "كل شيء أمامك – من أي مكان",
+  demo_lead: "هكذا تبدو شاشة النظرة العامة. جرّب الزرّين.",
+  demo_title: "شاشاتي",
+  btn_switch: "تشغيل البرنامج المسائي",
+  alarm_on: "إرسال إعلان", alarm_off: "إنهاء الإعلان",
+  hint_start: "عرض تجريبي لأربع شاشات.",
+  hint_alarm: "تعرض جميع الشاشات الإعلان فورًا، وعند إنهائه يعود البرنامج المعتاد تلقائيًا.",
+  hint_alarm_end: "انتهى الإعلان – عادت كل شاشة إلى برنامجها.",
+  hint_eve: "البرنامج المسائي مفعّل. ويمكن ضبط ذلك تلقائيًا حسب جدول زمني.",
+  hint_day: "العودة إلى البرنامج النهاري.",
+  online: "متصل", alarm_pill: "إعلان",
+  alarm_text: "تنبيه مهم: يرجى استخدام المخرج",
+  program: "البرنامج", day: "نهاري", eve: "مسائي",
+  d1: "المدخل", d2: "الصندوق", d3: "الواجهة", d4: "منطقة الانتظار",
+  t1: "تشكيلة الخريف", t2: "عرض الأسبوع", t3: "وصل حديثًا", t4: "ساعات العمل",
+  e1: "مفتوح حتى 8 مساءً", e2: "ساعة سعيدة 6–8 مساءً", e3: "غدًا: افتتاح جديد", e4: "شكرًا لزيارتكم",
+  ben_eyebrow: "ماذا يقدّم VizPlay",
+  ben_h2: "كل ما تحتاجه فعلًا في العمل اليومي",
+  b1h: "الجداول الزمنية", b1: "فطور صباحًا، وقائمة الغداء ظهرًا، وإطفاء الشاشة ليلًا – كل ذلك تلقائيًا.",
+  b2h: "إعلان فوري", b2: "بنقرة واحدة تظهر رسالة مهمة على جميع الشاشات أو على شاشات مختارة.",
+  b3h: "مقاوم للأعطال", b3: "يُخزَّن المحتوى على الجهاز، فإذا انقطع الإنترنت يستمر العرض.",
+  b4h: "مراقبة عن بُعد", b4: "شاهد صورة حيّة لما يُعرض فعلًا على الشاشة – دون الحاجة للذهاب.",
+  b5h: "جدران الفيديو", b5: "عدة شاشات تعرض بتزامن تام – مثالية للمؤثرات الممتدة عبر عدة أجهزة.",
+  b6h: "موسيقى خلفية", b6: "موسيقى خاصة لكل موقع، بشكل مستقل عن الفيديوهات.",
+  b7h: "YouTube والبث المباشر", b7: "ألصق الرابط فقط، ويُعرض على الشاشة.",
+  b8h: "من الهاتف", b8: "الواجهة تعمل على الحاسوب وعلى الهاتف الذكي بنفس السهولة.",
+  b9h: "البيانات تبقى لديك", b9: "بدون سحابة خارجية: كل شيء يعمل على أجهزة العميل الخاصة.",
+  hw_eyebrow: "يناسب كل الشاشات",
+  hw_h2: "استمر في استخدام أجهزة التلفاز الموجودة",
+  hw1tag: "تلفاز ذكي", hw1h: "تطبيق على التلفاز مباشرة", hw1: "أجهزة التلفاز الحديثة بنظام Android / Google TV (مثل TCL) لا تحتاج إلى أي إضافة: يُثبَّت تطبيق VizPlay ويبدأ التلفاز العرض مباشرة.",
+  hw2tag: "أي تلفاز آخر", hw2h: "جهاز صغير بمنفذ HDMI", hw2: "أجهزة التلفاز أو الشاشات الأقدم تحصل على حاسوب صغير خلف الجهاز – مخفي، موفّر للطاقة، ومنخفض التكلفة.",
+  use_eyebrow: "مجالات الاستخدام",
+  use_h2: "في كل مكان ينظر فيه الزبائن إلى شاشة",
+  u1: "محطات الوقود", u2: "المطاعم وقوائم الطعام", u3: "المتاجر وواجهات العرض", u4: "العيادات والصيدليات", u5: "المكاتب والاستقبال", u6: "النوادي الرياضية",
+  ref_eyebrow: "مراجع",
+  ref_h2: "قيد الاستخدام اليومي بالفعل",
+  r1name: "عميل تجاري", r1kind: "عدة شاشات في موقع واحد",
+  r1: "هنا تعمل عدة شاشات بنظام VizPlay – معظمها أجهزة تلفاز ذكية بالتطبيق، وتُدار كلها من واجهة واحدة. يُغيَّر المحتوى بنقرة، دون الحاجة لأحد في الموقع.",
+  r1f1: "تلفاز ذكي مع التطبيق", r1f2: "تحكم مركزي", r1f3: "صيانة عن بُعد",
+  r2name: "محطة وقود", r2kind: "تعمل على مدار الساعة",
+  r2: "في إحدى محطات الوقود تعرض الشاشات العروض والمعلومات على مدار الساعة. تتم التغييرات عن بُعد، ويستمر التشغيل حتى أثناء انقطاع الإنترنت.",
+  r2f1: "تشغيل على مدار الساعة", r2f2: "تغييرات عن بُعد", r2f3: "مقاوم للأعطال",
+  live: "يعمل الآن",
+  cmp_eyebrow: "مقارنة",
+  cmp_h2: "VizPlay مقارنةً بحلول الاشتراك المعتادة",
+  cmp_them: "برامج الاشتراك المعتادة",
+  c1: "التكاليف الجارية", c1a: "بدون رسوم ترخيص", c1b: "شهريًا عن كل شاشة",
+  c2: "يستمر دون إنترنت", c2b: "غالبًا بشكل محدود",
+  c3: "أين تُحفظ البيانات؟", c3a: "لدى العميل", c3b: "في سحابة خارجية",
+  c4: "تلفاز ذكي دون جهاز إضافي", c4b: "حسب المزوّد",
+  c5: "التعديلات والدعم", c5a: "منا مباشرة", c5b: "تذكرة لدى المزوّد",
+  yes: "نعم",
+  close_eyebrow: "باختصار",
+  close_h2: "منتج خاص بنا، يعمل بالفعل.",
+  close_lead: "تم تطوير VizPlay بالكامل، وهو قيد الاستخدام لدى العملاء، ويمكن تعميمه على عملاء آخرين دون تكاليف ترخيص.",
+  sum1: "سهل الاستخدام", sum2: "مقاوم للأعطال", sum3: "بدون تكاليف اشتراك", sum4: "يعمل لدى العملاء",
+  footer: "VizPlay · اللافتات الرقمية من Vizionists"
+}
+};
+
+(() => {
+  let lang = DEFAULT_LANG, alarm = false, evening = false, hintKey = "hint_start";
+  try { const q = new URLSearchParams(location.search).get("lang"); if (I18N[q]) lang = q; } catch (e) {}
+  const t = k => I18N[lang][k] ?? I18N.de[k];
+  const grid = document.getElementById("grid"), hint = document.getElementById("hint");
+  const DEVS = [
+    { n: "d1", day: "t1", eve: "e1", bg: "linear-gradient(135deg,#4338ca,#1e1b4b)", ebg: "linear-gradient(135deg,#1e3a8a,#0b1026)" },
+    { n: "d2", day: "t2", eve: "e2", bg: "linear-gradient(135deg,#c2410c,#3b1d06)", ebg: "linear-gradient(135deg,#7c2d12,#1c0a03)" },
+    { n: "d3", day: "t3", eve: "e3", bg: "linear-gradient(135deg,#0f766e,#022c22)", ebg: "linear-gradient(135deg,#134e4a,#03120f)" },
+    { n: "d4", day: "t4", eve: "e4", bg: "linear-gradient(135deg,#6d28d9,#2e1065)", ebg: "linear-gradient(135deg,#3b0764,#12021f)" },
+  ];
+  const render = () => {
+    grid.innerHTML = DEVS.map(d => {
+      const bg = alarm ? "linear-gradient(135deg,#b91c1c,#450a0a)" : evening ? d.ebg : d.bg;
+      const txt = alarm ? t("alarm_text") : t(evening ? d.eve : d.day);
+      const pill = alarm ? '<span class="pill tk">' + t("alarm_pill") + "</span>" : '<span class="pill on">' + t("online") + "</span>";
+      return '<div class="dev"><div class="pv" style="background:' + bg + '">' + txt + '</div><div class="bd"><div><b>' + t(d.n) + "</b>" + pill + "</div><div><small>" + t("program") + "</small><small>" + t(evening ? "eve" : "day") + "</small></div></div></div>";
+    }).join("");
+    document.getElementById("alarm-label").textContent = t(alarm ? "alarm_off" : "alarm_on");
+    hint.textContent = t(hintKey);
+  };
+  const apply = () => {
+    const root = document.documentElement;
+    root.lang = lang; root.dir = lang === "ar" ? "rtl" : "ltr";
+    document.querySelectorAll("[data-t]").forEach(el => { el.innerHTML = t(el.dataset.t); });
+    document.querySelectorAll(".langs button").forEach(b => b.setAttribute("aria-pressed", String(b.dataset.lang === lang)));
+    render();
+  };
+  document.querySelectorAll(".langs button").forEach(b => b.addEventListener("click", () => { lang = b.dataset.lang; apply(); }));
+  document.getElementById("btn-alarm").addEventListener("click", () => { alarm = !alarm; hintKey = alarm ? "hint_alarm" : "hint_alarm_end"; render(); });
+  document.getElementById("btn-switch").addEventListener("click", () => { evening = !evening; hintKey = evening ? "hint_eve" : "hint_day"; render(); });
+  apply();
+
+  // TV-Demo: hartes Umschalten, nie schwarz
+  const slides = [...document.querySelectorAll("#tv .slide")], prog = document.getElementById("prog");
+  const reduce = matchMedia("(prefers-reduced-motion: reduce)").matches, dur = 3500;
+  let cur = 0;
+  const run = () => { if (reduce) return; prog.style.transition = "none"; prog.style.width = "0"; void prog.offsetWidth; prog.style.transition = "width " + dur + "ms linear"; prog.style.width = "100%"; };
+  run();
+  setInterval(() => { slides[cur].classList.remove("on"); cur = (cur + 1) % slides.length; slides[cur].classList.add("on"); run(); }, dur);
+})();
+</script>
+</body>
+</html>
