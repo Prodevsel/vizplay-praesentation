@@ -102,28 +102,99 @@ section{padding-block:96px;border-bottom:1px solid var(--line)}
 .scr.sel{border-color:var(--accent);box-shadow:0 0 0 1px var(--accent)}
 .scr.sel i{background:linear-gradient(135deg,#4338ca,#1e1b4b)}
 
-/* Demo */
-.dash{border:1px solid var(--line);border-radius:14px;overflow:hidden;background:var(--panel)}
-.dash-top{display:flex;align-items:center;gap:12px;padding:14px 18px;border-bottom:1px solid var(--line);flex-wrap:wrap}
-.dash-top .t{font-weight:600}
-.dash-top .sp{margin-inline-start:auto;display:flex;gap:8px;flex-wrap:wrap}
-.btn{font:500 14px var(--sans);border-radius:8px;padding:9px 14px;border:1px solid var(--line2);background:var(--panel2);color:var(--fg);display:inline-flex;align-items:center;gap:8px;cursor:pointer}
+/* App-Demo */
+.cta{display:inline-flex;align-items:center;gap:10px;margin-top:30px;padding:14px 22px;border-radius:10px;background:var(--accent-strong);color:#fff;font:600 16px var(--sans);text-decoration:none;box-shadow:0 12px 30px -12px rgba(79,70,229,.9)}
+.cta:hover{background:#5b52f0}
+.cta:focus-visible{outline:2px solid #fff;outline-offset:3px}
+.cta .i{width:18px;height:18px}
+[dir="rtl"] .cta .i,[dir="rtl"] .answer .i{transform:scaleX(-1)}
+.tip{display:flex;gap:10px;align-items:flex-start;padding:14px 18px;border:1px solid rgba(129,140,248,.35);background:rgba(79,70,229,.1);border-radius:10px;margin-bottom:16px;font-size:15px}
+.tip .i{color:var(--accent);width:18px;height:18px;margin-top:3px}
+.app{border:1px solid var(--line2);border-radius:14px;overflow:hidden;background:var(--bg);box-shadow:0 40px 90px -50px rgba(79,70,229,.7)}
+.app:fullscreen{border-radius:0;display:flex;flex-direction:column}
+.app:fullscreen .app-body{flex:1;height:auto}
+.app-bar{display:flex;align-items:center;gap:8px;padding:10px 14px;background:var(--panel2);border-bottom:1px solid var(--line)}
+.app-bar i{width:11px;height:11px;border-radius:50%;background:#3f3f46}
+.app-bar .ttl{margin-inline-start:8px;font-size:13px;color:var(--muted)}
+.app-bar .sp{margin-inline-start:auto;display:flex;gap:6px}
+.btn{font:500 13px var(--sans);border-radius:8px;padding:7px 12px;border:1px solid var(--line2);background:var(--panel2);color:var(--fg);display:inline-flex;align-items:center;gap:7px;cursor:pointer;white-space:nowrap}
 .btn:hover{background:#222226}
-.btn .i{width:16px;height:16px}
+.btn:focus-visible,.navb:focus-visible,.sel:focus-visible,.ib:focus-visible{outline:2px solid var(--accent);outline-offset:2px}
+.btn .i{width:15px;height:15px}
+.btn.primary{background:var(--accent-strong);border-color:var(--accent-strong)}
+.btn.primary:hover{background:#5b52f0}
 .btn.danger{background:#7f1d1d;border-color:#991b1b}
 .btn.danger:hover{background:#991b1b}
-.grid{display:grid;grid-template-columns:repeat(4,1fr);gap:14px;padding:18px}
-@media (max-width:900px){.grid{grid-template-columns:repeat(2,1fr)}}
-@media (max-width:480px){.grid{grid-template-columns:1fr}}
-.dev{border:1px solid var(--line);border-radius:10px;background:var(--bg);overflow:hidden}
-.dev .pv{aspect-ratio:16/9;display:flex;align-items:flex-end;padding:10px;font-size:13px;font-weight:500;color:#fff;transition:background .3s}
-.dev .bd{padding:12px;display:grid;gap:4px;font-size:14px}
-.dev .bd div{display:flex;justify-content:space-between;gap:8px}
-.dev .bd small{color:var(--muted)}
-.pill{font-size:12px;padding:2px 8px;border-radius:999px}
+.app-body{display:grid;grid-template-columns:210px 1fr;height:600px}
+.side{border-inline-end:1px solid var(--line);background:#0c0c0e;padding:14px 10px;display:flex;flex-direction:column;gap:4px}
+.side .brand{padding:4px 8px 14px;font-size:15px}
+.side .logo{width:24px;height:24px}
+.navb{display:flex;align-items:center;gap:10px;width:100%;padding:9px 10px;border-radius:8px;border:0;background:none;color:var(--muted);font:500 14px var(--sans);cursor:pointer;text-align:start}
+.navb:hover{background:var(--panel2);color:var(--fg)}
+.navb[aria-current="page"]{background:#1c1c20;color:var(--fg)}
+.navb .i{width:17px;height:17px}
+.navb .cnt{margin-inline-start:auto;font-size:12px;color:var(--dim)}
+.side .badge{margin-top:auto;font-size:12px;color:var(--dim);padding:8px 10px;border:1px dashed var(--line2);border-radius:8px;text-align:center}
+.main{overflow:auto;padding:22px 24px;position:relative}
+.mh{display:flex;align-items:center;gap:12px;flex-wrap:wrap;margin-bottom:18px}
+.mh h3{font-size:22px;font-weight:600}
+.mh .sp{margin-inline-start:auto;display:flex;gap:8px;flex-wrap:wrap}
+@media (max-width:760px){
+  .app-body{grid-template-columns:1fr;height:auto}
+  .side{flex-direction:row;overflow-x:auto;border-inline-end:0;border-bottom:1px solid var(--line);padding:8px}
+  .side .brand,.side .badge{display:none}
+  .navb{width:auto}
+  .navb .cnt{display:none}
+  .main{min-height:520px;padding:16px}
+  .app-bar .ttl{display:none}
+}
+.dgrid{display:grid;grid-template-columns:repeat(2,1fr);gap:14px}
+@media (max-width:520px){.dgrid{grid-template-columns:1fr}}
+.dcard{border:1px solid var(--line);border-radius:12px;background:var(--panel);overflow:hidden}
+.pv{aspect-ratio:16/9;position:relative;display:flex;flex-direction:column;justify-content:flex-end;padding:12px 14px;color:#fff;overflow:hidden}
+.pv b{font-size:17px;font-weight:600;line-height:1.2}
+.pv small{font-size:11px;opacity:.75}
+.pv .dots{position:absolute;top:10px;inset-inline-end:12px;display:flex;gap:4px}
+.pv .dots i{width:6px;height:6px;border-radius:50%;background:rgba(255,255,255,.35)}
+.pv .dots i.on{background:#fff}
+.pv.off{background:#000;color:var(--dim);align-items:center;justify-content:center}
+.dbody{padding:12px 14px;display:grid;gap:10px}
+.dtop{display:flex;justify-content:space-between;align-items:center;gap:8px}
+.dtop b{font-weight:600}
+.pill{font-size:12px;padding:2px 9px;border-radius:999px;white-space:nowrap}
 .pill.on{color:var(--ok);background:rgba(34,197,94,.1)}
 .pill.tk{color:var(--warn);background:rgba(245,158,11,.12)}
-.hint{margin-top:16px;font-size:15px;color:var(--muted);min-height:1.6em}
+.sel{width:100%;font:14px var(--sans);color:var(--fg);background:var(--panel2);border:1px solid var(--line2);border-radius:8px;padding:8px 10px}
+.flab{font-size:12px;color:var(--dim)}
+.plwrap{display:grid;grid-template-columns:220px 1fr;gap:16px;align-items:start}
+@media (max-width:620px){.plwrap{grid-template-columns:1fr}}
+.pllist{display:grid;gap:6px}
+.plb{display:grid;gap:2px;text-align:start;padding:12px;border-radius:10px;border:1px solid var(--line);background:var(--panel);color:var(--fg);font:500 14px var(--sans);cursor:pointer}
+.plb small{color:var(--dim);font-weight:400}
+.plb[aria-pressed="true"]{border-color:var(--accent);box-shadow:0 0 0 1px var(--accent)}
+.plb:focus-visible{outline:2px solid var(--accent);outline-offset:2px}
+.pled{border:1px solid var(--line);border-radius:12px;background:var(--panel);padding:16px;display:grid;gap:12px}
+.pled h4{margin:0;font-size:18px}
+.runs{font-size:13px;color:var(--muted)}
+.item{display:flex;align-items:center;gap:10px;padding:8px;border:1px solid var(--line);border-radius:8px;background:var(--bg)}
+.item .th{width:54px;height:32px;border-radius:5px;flex:none}
+.item span{flex:1;font-size:14px;min-width:0;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.item small{color:var(--dim);font-size:12px}
+.ib{width:30px;height:30px;display:grid;place-items:center;border-radius:6px;border:1px solid var(--line2);background:var(--panel2);color:var(--fg);cursor:pointer;flex:none}
+.ib:hover{background:#26262b}
+.ib:disabled{opacity:.35;cursor:default}
+.ib .i{width:14px;height:14px}
+.empty{color:var(--dim);font-size:14px;padding:10px 0}
+.mgrid{display:grid;grid-template-columns:repeat(auto-fill,minmax(150px,1fr));gap:12px}
+.mt{border:1px solid var(--line);border-radius:10px;overflow:hidden;background:var(--panel)}
+.mt .th{aspect-ratio:16/9;display:flex;align-items:flex-end;padding:8px 10px;color:#fff;font-size:13px;font-weight:600}
+.mt .mb{padding:8px 10px;font-size:12px;color:var(--dim);display:flex;justify-content:space-between;gap:6px}
+.mt .bar{height:4px;background:var(--line);border-radius:2px;overflow:hidden;margin:0 10px 10px}
+.mt .bar i{display:block;height:100%;background:var(--accent);transition:width .2s linear}
+.toast{position:sticky;bottom:0;margin-top:18px;display:flex;justify-content:center;pointer-events:none}
+.toast span{background:#1c1c20;border:1px solid var(--line2);border-radius:10px;padding:10px 16px;font-size:14px;box-shadow:0 10px 30px -10px #000;opacity:0;transform:translateY(8px);transition:opacity .2s,transform .2s}
+.toast span.show{opacity:1;transform:none}
+@media (prefers-reduced-motion:reduce){.toast span,.mt .bar i{transition:none}}
 
 /* Benefits */
 .benefits{display:grid;grid-template-columns:repeat(3,1fr);gap:1px;background:var(--line);border:1px solid var(--line);border-radius:14px;overflow:hidden}
@@ -226,6 +297,16 @@ footer .wrap{display:flex;justify-content:space-between;gap:16px;flex-wrap:wrap}
   <symbol id="moon" viewBox="0 0 24 24"><path d="M12 3a6 6 0 0 0 9 9 9 9 0 1 1-9-9z"/></symbol>
   <symbol id="zap" viewBox="0 0 24 24"><path d="M13 2 3 14h9l-1 8 10-12h-9z"/></symbol>
   <symbol id="tvq" viewBox="0 0 24 24"><rect x="2" y="7" width="20" height="15" rx="2"/><path d="m17 2-5 5-5-5"/></symbol>
+  <symbol id="monitor" viewBox="0 0 24 24"><rect x="2" y="3" width="20" height="14" rx="2"/><path d="M8 21h8M12 17v4"/></symbol>
+  <symbol id="list" viewBox="0 0 24 24"><path d="M8 6h13M8 12h13M8 18h13M3 6h.01M3 12h.01M3 18h.01"/></symbol>
+  <symbol id="image" viewBox="0 0 24 24"><rect x="3" y="3" width="18" height="18" rx="2"/><circle cx="9" cy="9" r="2"/><path d="m21 15-3.1-3.1a2 2 0 0 0-2.8 0L6 21"/></symbol>
+  <symbol id="bulb" viewBox="0 0 24 24"><path d="M15 14c.2-1 .7-1.7 1.5-2.5 1-.9 1.5-2.2 1.5-3.5A6 6 0 0 0 6 8c0 1 .2 2.2 1.5 3.5.7.7 1.3 1.5 1.5 2.5M9 18h6M10 22h4"/></symbol>
+  <symbol id="undo" viewBox="0 0 24 24"><path d="M3 7v6h6"/><path d="M21 17a9 9 0 0 0-15-6.7L3 13"/></symbol>
+  <symbol id="expand" viewBox="0 0 24 24"><path d="M15 3h6v6M9 21H3v-6M21 3l-7 7M3 21l7-7"/></symbol>
+  <symbol id="plus" viewBox="0 0 24 24"><path d="M12 5v14M5 12h14"/></symbol>
+  <symbol id="up" viewBox="0 0 24 24"><path d="m18 15-6-6-6 6"/></symbol>
+  <symbol id="down" viewBox="0 0 24 24"><path d="m6 9 6 6 6-6"/></symbol>
+  <symbol id="x" viewBox="0 0 24 24"><path d="M18 6 6 18M6 6l12 12"/></symbol>
   <symbol id="arrow" viewBox="0 0 24 24"><path d="M5 12h14M13 6l6 6-6 6"/></symbol>
 </svg>
 
@@ -251,6 +332,7 @@ footer .wrap{display:flex;justify-content:space-between;gap:16px;flex-wrap:wrap}
         <li><svg class="i"><use href="#check"/></svg><span data-t="hero_c2"></span></li>
         <li><svg class="i"><use href="#check"/></svg><span data-t="hero_c3"></span></li>
       </ul>
+      <a class="cta" href="#demo"><span data-t="cta_demo"></span><svg class="i"><use href="#arrow"/></svg></a>
     </div>
     <div>
       <div class="tv" id="tv">
@@ -318,24 +400,32 @@ footer .wrap{display:flex;justify-content:space-between;gap:16px;flex-wrap:wrap}
   </div>
 </section>
 
-<section>
+<section id="demo">
   <div class="wrap">
     <div class="head">
       <div class="eyebrow" data-t="demo_eyebrow"></div>
       <h2 data-t="demo_h2"></h2>
       <p class="lead" data-t="demo_lead"></p>
     </div>
-    <div class="dash">
-      <div class="dash-top">
-        <span class="t" data-t="demo_title"></span>
+    <div class="tip"><svg class="i"><use href="#bulb"/></svg><span data-t="tip"></span></div>
+    <div class="app" id="app">
+      <div class="app-bar"><i></i><i></i><i></i><span class="ttl">VizPlay</span>
         <div class="sp">
-          <button class="btn" id="btn-switch" type="button"><svg class="i"><use href="#clock"/></svg><span data-t="btn_switch"></span></button>
-          <button class="btn danger" id="btn-alarm" type="button"><svg class="i"><use href="#siren"/></svg><span id="alarm-label"></span></button>
+          <button class="btn" type="button" id="d-reset"><svg class="i"><use href="#undo"/></svg><span data-t="reset"></span></button>
+          <button class="btn" type="button" id="d-full"><svg class="i"><use href="#expand"/></svg><span data-t="fullscreen"></span></button>
         </div>
       </div>
-      <div class="grid" id="grid"></div>
+      <div class="app-body">
+        <div class="side">
+          <div class="brand"><div class="logo"><svg viewBox="0 0 24 24"><path d="m7 4 12 8-12 8z"/></svg></div>VizPlay</div>
+          <button class="navb" type="button" data-view="displays"><svg class="i"><use href="#monitor"/></svg><span data-t="nav_displays"></span><span class="cnt" id="c-displays"></span></button>
+          <button class="navb" type="button" data-view="playlists"><svg class="i"><use href="#list"/></svg><span data-t="nav_playlists"></span><span class="cnt" id="c-playlists"></span></button>
+          <button class="navb" type="button" data-view="media"><svg class="i"><use href="#image"/></svg><span data-t="nav_media"></span><span class="cnt" id="c-media"></span></button>
+          <div class="badge" data-t="demo_badge"></div>
+        </div>
+        <div class="main" id="main" aria-live="polite"></div>
+      </div>
     </div>
-    <p class="hint" id="hint" aria-live="polite"></p>
   </div>
 </section>
 
@@ -471,6 +561,21 @@ footer .wrap{display:flex;justify-content:space-between;gap:16px;flex-wrap:wrap}
 const DEFAULT_LANG = "de";
 const I18N = {
 de: {
+  cta_demo: "Demo testen",
+  demo_eyebrow: "Live-Demo", demo_h2: "Die App zum Ausprobieren",
+  demo_lead: "Eine vereinfachte Version der echten Oberfläche. Klicken Sie sich einfach durch – es kann nichts kaputtgehen.",
+  tip: "Tipp: In der Mediathek etwas hochladen, unter Playlists zur Playlist „Schaufenster“ hinzufügen – und unter Bildschirme zusehen, wie es erscheint.",
+  nav_displays: "Bildschirme", nav_playlists: "Playlists", nav_media: "Mediathek", demo_badge: "Demo-Modus", fullscreen: "Vollbild", reset: "Zurücksetzen",
+  lbl_playlist: "Zeigt Playlist", empty_pl: "Diese Playlist ist noch leer. Fügen Sie unten ein Medium hinzu.", no_content: "Kein Inhalt",
+  pl1: "Schaufenster", pl2: "Angebote", pl3: "Info & Service",
+  m1: "Herbstkollektion", m2: "Angebot der Woche", m3: "Öffnungszeiten", m4: "Neuheiten", m5: "Kaffee-Aktion", m6: "Willkommen",
+  up1: "Neues Angebot", up2: "Sommer-Sale", up3: "Event am Samstag", up4: "Neue Produkte",
+  new_pl: "Neue Playlist", add_item: "Medium hinzufügen …", runs_on: "Läuft auf:", runs_none: "Noch keinem Bildschirm zugewiesen", items: "Inhalte",
+  upload: "Hochladen", uploading: "Wird optimiert …", kind_video: "Video", kind_image: "Bild", screens: "Bildschirme",
+  up_btn: "Nach oben", down_btn: "Nach unten", remove: "Entfernen",
+  t_uploaded: "„{x}“ ist fertig und kann in eine Playlist.", t_added: "„{x}“ hinzugefügt – {n} Bildschirm(e) aktualisiert.",
+  t_assign: "{d} zeigt jetzt „{p}“.", t_alarm: "Durchsage läuft auf allen Bildschirmen.", t_alarm_end: "Normales Programm läuft wieder.",
+  t_removed: "Entfernt – Bildschirme aktualisiert.", t_order: "Reihenfolge geändert.", t_newpl: "Neue Playlist angelegt.", t_reset: "Demo zurückgesetzt.",
   st_eyebrow: "Smart-TVs im Detail",
   st_h2: "So kommt VizPlay auf Ihren Fernseher",
   st_lead: "Die Einrichtung übernehmen wir einmalig vor Ort. Danach ist für Sie nichts mehr zu tun – der Fernseher wird ganz normal ein- und ausgeschaltet.",
@@ -511,24 +616,11 @@ de: {
   s2n: "Schritt 2", s2h: "Zusammenstellen", s2: "Reihenfolge per Maus festlegen, Anzeigedauer wählen – fertig ist die Playlist.",
   m_sc1: "Eingang", m_sc2: "Kasse", m_sc3: "Lager", m_sc4: "Schaufenster",
   s3n: "Schritt 3", s3h: "Bildschirme wählen", s3: "Anklicken, auf welchen Bildschirmen es laufen soll. Wenige Sekunden später ist es live.",
-  demo_eyebrow: "Zum Ausprobieren",
-  demo_h2: "Alles im Blick – von überall",
-  demo_lead: "So sieht die Übersicht aus. Probieren Sie die beiden Knöpfe aus.",
-  demo_title: "Meine Bildschirme",
-  btn_switch: "Abendprogramm starten",
-  alarm_on: "Durchsage senden", alarm_off: "Durchsage beenden",
-  hint_start: "Beispielansicht mit vier Bildschirmen.",
-  hint_alarm: "Alle Bildschirme zeigen sofort die Durchsage. Beim Beenden läuft das normale Programm automatisch weiter.",
-  hint_alarm_end: "Durchsage beendet – jeder Bildschirm zeigt wieder sein Programm.",
-  hint_eve: "Abendprogramm aktiv. Das lässt sich auch automatisch per Zeitplan einstellen.",
-  hint_day: "Zurück zum Tagesprogramm.",
-  online: "online", alarm_pill: "Durchsage",
+            alarm_on: "Durchsage senden", alarm_off: "Durchsage beenden",
+            online: "online", alarm_pill: "Durchsage",
   alarm_text: "Wichtige Durchsage: Bitte Ausgang benutzen",
-  program: "Programm", day: "Tag", eve: "Abend",
-  d1: "Eingang", d2: "Kasse", d3: "Schaufenster", d4: "Wartebereich",
-  t1: "Herbstkollektion", t2: "Angebot der Woche", t3: "Neuheiten", t4: "Öffnungszeiten",
-  e1: "Heute bis 20 Uhr", e2: "Happy Hour 18–20 Uhr", e3: "Morgen: Neueröffnung", e4: "Danke für Ihren Besuch",
-  ben_eyebrow: "Was VizPlay kann",
+    d1: "Eingang", d2: "Kasse", d3: "Schaufenster", d4: "Wartebereich",
+      ben_eyebrow: "Was VizPlay kann",
   ben_h2: "Alles, was man im Alltag wirklich braucht",
   b1h: "Zeitpläne", b1: "Morgens Frühstück, mittags Mittagstisch, nachts Bildschirm aus – läuft automatisch.",
   b2h: "Sofort-Durchsage", b2: "Ein Klick und eine wichtige Meldung erscheint auf allen oder ausgewählten Bildschirmen.",
@@ -571,6 +663,21 @@ de: {
   footer: "VizPlay · Digital Signage von Vizionists"
 },
 en: {
+  cta_demo: "Try the demo",
+  demo_eyebrow: "Live demo", demo_h2: "Try the app yourself",
+  demo_lead: "A simplified version of the real interface. Just click around – nothing can break.",
+  tip: "Tip: upload something in the media library, add it to the “Shop window” playlist under Playlists – then watch it appear under Screens.",
+  nav_displays: "Screens", nav_playlists: "Playlists", nav_media: "Media library", demo_badge: "Demo mode", fullscreen: "Full screen", reset: "Reset",
+  lbl_playlist: "Shows playlist", empty_pl: "This playlist is still empty. Add a media item below.", no_content: "No content",
+  pl1: "Shop window", pl2: "Offers", pl3: "Info & service",
+  m1: "Autumn collection", m2: "Deal of the week", m3: "Opening hours", m4: "New arrivals", m5: "Coffee special", m6: "Welcome",
+  up1: "New offer", up2: "Summer sale", up3: "Saturday event", up4: "New products",
+  new_pl: "New playlist", add_item: "Add media …", runs_on: "Playing on:", runs_none: "Not assigned to a screen yet", items: "items",
+  upload: "Upload", uploading: "Optimizing …", kind_video: "Video", kind_image: "Image", screens: "screens",
+  up_btn: "Move up", down_btn: "Move down", remove: "Remove",
+  t_uploaded: "“{x}” is ready to add to a playlist.", t_added: "“{x}” added – {n} screen(s) updated.",
+  t_assign: "{d} now shows “{p}”.", t_alarm: "Announcement is running on all screens.", t_alarm_end: "Normal program is back.",
+  t_removed: "Removed – screens updated.", t_order: "Order changed.", t_newpl: "New playlist created.", t_reset: "Demo reset.",
   st_eyebrow: "Smart TVs in detail",
   st_h2: "How VizPlay gets onto your TV",
   st_lead: "We handle the setup once, on site. After that there's nothing for you to do – the TV is switched on and off as usual.",
@@ -611,24 +718,11 @@ en: {
   s2n: "Step 2", s2h: "Arrange", s2: "Set the order with the mouse, choose how long each shows – your playlist is ready.",
   m_sc1: "Entrance", m_sc2: "Checkout", m_sc3: "Stockroom", m_sc4: "Shop window",
   s3n: "Step 3", s3h: "Pick screens", s3: "Click which screens should show it. A few seconds later it's live.",
-  demo_eyebrow: "Try it",
-  demo_h2: "Everything at a glance – from anywhere",
-  demo_lead: "This is the overview. Try the two buttons.",
-  demo_title: "My screens",
-  btn_switch: "Start evening program",
-  alarm_on: "Send announcement", alarm_off: "End announcement",
-  hint_start: "Sample view with four screens.",
-  hint_alarm: "Every screen shows the announcement immediately. When it ends, the normal program resumes automatically.",
-  hint_alarm_end: "Announcement ended – every screen is back on its program.",
-  hint_eve: "Evening program active. This can also switch automatically on a schedule.",
-  hint_day: "Back to the daytime program.",
-  online: "online", alarm_pill: "Announcement",
+            alarm_on: "Send announcement", alarm_off: "End announcement",
+            online: "online", alarm_pill: "Announcement",
   alarm_text: "Important notice: please use the exit",
-  program: "Program", day: "Day", eve: "Evening",
-  d1: "Entrance", d2: "Checkout", d3: "Shop window", d4: "Waiting area",
-  t1: "Autumn collection", t2: "Deal of the week", t3: "New arrivals", t4: "Opening hours",
-  e1: "Open until 8 pm", e2: "Happy hour 6–8 pm", e3: "Tomorrow: grand opening", e4: "Thanks for visiting",
-  ben_eyebrow: "What VizPlay does",
+    d1: "Entrance", d2: "Checkout", d3: "Shop window", d4: "Waiting area",
+      ben_eyebrow: "What VizPlay does",
   ben_h2: "Everything you actually need day to day",
   b1h: "Schedules", b1: "Breakfast in the morning, lunch menu at noon, screen off at night – automatically.",
   b2h: "Instant announcements", b2: "One click and an important message appears on all or selected screens.",
@@ -671,6 +765,21 @@ en: {
   footer: "VizPlay · Digital signage by Vizionists"
 },
 ar: {
+  cta_demo: "جرّب العرض التجريبي",
+  demo_eyebrow: "عرض تجريبي مباشر", demo_h2: "جرّب التطبيق بنفسك",
+  demo_lead: "نسخة مبسطة من الواجهة الحقيقية. تنقّل واضغط كما تشاء – لا يمكن أن يتعطل شيء.",
+  tip: "نصيحة: ارفع ملفًا في مكتبة الوسائط، ثم أضفه إلى قائمة «الواجهة» في قوائم التشغيل – وشاهده يظهر في قسم الشاشات.",
+  nav_displays: "الشاشات", nav_playlists: "قوائم التشغيل", nav_media: "مكتبة الوسائط", demo_badge: "وضع تجريبي", fullscreen: "ملء الشاشة", reset: "إعادة الضبط",
+  lbl_playlist: "قائمة التشغيل المعروضة", empty_pl: "هذه القائمة فارغة. أضف وسيطًا من الأسفل.", no_content: "لا يوجد محتوى",
+  pl1: "الواجهة", pl2: "العروض", pl3: "معلومات وخدمات",
+  m1: "تشكيلة الخريف", m2: "عرض الأسبوع", m3: "ساعات العمل", m4: "وصل حديثًا", m5: "عرض القهوة", m6: "أهلًا وسهلًا",
+  up1: "عرض جديد", up2: "تخفيضات الصيف", up3: "فعالية يوم السبت", up4: "منتجات جديدة",
+  new_pl: "قائمة تشغيل جديدة", add_item: "إضافة وسيط …", runs_on: "تُعرض على:", runs_none: "لم تُخصَّص لأي شاشة بعد", items: "عناصر",
+  upload: "رفع", uploading: "جارٍ التحسين …", kind_video: "فيديو", kind_image: "صورة", screens: "شاشات",
+  up_btn: "إلى الأعلى", down_btn: "إلى الأسفل", remove: "إزالة",
+  t_uploaded: "«{x}» جاهز للإضافة إلى قائمة تشغيل.", t_added: "تمت إضافة «{x}» – تم تحديث {n} شاشة.",
+  t_assign: "{d} تعرض الآن «{p}».", t_alarm: "الإعلان يُعرض على جميع الشاشات.", t_alarm_end: "عاد البرنامج المعتاد.",
+  t_removed: "تمت الإزالة – تم تحديث الشاشات.", t_order: "تم تغيير الترتيب.", t_newpl: "تم إنشاء قائمة تشغيل جديدة.", t_reset: "تمت إعادة ضبط العرض التجريبي.",
   st_eyebrow: "التلفاز الذكي بالتفصيل",
   st_h2: "كيف يصل VizPlay إلى تلفازك",
   st_lead: "نتولى الإعداد مرة واحدة في موقعك. بعد ذلك لا يلزمك فعل أي شيء – يُشغَّل التلفاز ويُطفأ كالمعتاد.",
@@ -711,24 +820,11 @@ ar: {
   s2n: "الخطوة 2", s2h: "الترتيب", s2: "حدّد الترتيب بالماوس واختر مدة العرض – وتصبح قائمة التشغيل جاهزة.",
   m_sc1: "المدخل", m_sc2: "الصندوق", m_sc3: "المستودع", m_sc4: "الواجهة",
   s3n: "الخطوة 3", s3h: "اختيار الشاشات", s3: "انقر على الشاشات التي تريد العرض عليها، وبعد ثوانٍ قليلة يبدأ العرض.",
-  demo_eyebrow: "جرّبه بنفسك",
-  demo_h2: "كل شيء أمامك – من أي مكان",
-  demo_lead: "هكذا تبدو شاشة النظرة العامة. جرّب الزرّين.",
-  demo_title: "شاشاتي",
-  btn_switch: "تشغيل البرنامج المسائي",
-  alarm_on: "إرسال إعلان", alarm_off: "إنهاء الإعلان",
-  hint_start: "عرض تجريبي لأربع شاشات.",
-  hint_alarm: "تعرض جميع الشاشات الإعلان فورًا، وعند إنهائه يعود البرنامج المعتاد تلقائيًا.",
-  hint_alarm_end: "انتهى الإعلان – عادت كل شاشة إلى برنامجها.",
-  hint_eve: "البرنامج المسائي مفعّل. ويمكن ضبط ذلك تلقائيًا حسب جدول زمني.",
-  hint_day: "العودة إلى البرنامج النهاري.",
-  online: "متصل", alarm_pill: "إعلان",
+            alarm_on: "إرسال إعلان", alarm_off: "إنهاء الإعلان",
+            online: "متصل", alarm_pill: "إعلان",
   alarm_text: "تنبيه مهم: يرجى استخدام المخرج",
-  program: "البرنامج", day: "نهاري", eve: "مسائي",
-  d1: "المدخل", d2: "الصندوق", d3: "الواجهة", d4: "منطقة الانتظار",
-  t1: "تشكيلة الخريف", t2: "عرض الأسبوع", t3: "وصل حديثًا", t4: "ساعات العمل",
-  e1: "مفتوح حتى 8 مساءً", e2: "ساعة سعيدة 6–8 مساءً", e3: "غدًا: افتتاح جديد", e4: "شكرًا لزيارتكم",
-  ben_eyebrow: "ماذا يقدّم VizPlay",
+    d1: "المدخل", d2: "الصندوق", d3: "الواجهة", d4: "منطقة الانتظار",
+      ben_eyebrow: "ماذا يقدّم VizPlay",
   ben_h2: "كل ما تحتاجه فعلًا في العمل اليومي",
   b1h: "الجداول الزمنية", b1: "فطور صباحًا، وقائمة الغداء ظهرًا، وإطفاء الشاشة ليلًا – كل ذلك تلقائيًا.",
   b2h: "إعلان فوري", b2: "بنقرة واحدة تظهر رسالة مهمة على جميع الشاشات أو على شاشات مختارة.",
@@ -773,26 +869,132 @@ ar: {
 };
 
 (() => {
-  let lang = DEFAULT_LANG, alarm = false, evening = false, hintKey = "hint_start";
+  let lang = DEFAULT_LANG;
   try { const q = new URLSearchParams(location.search).get("lang"); if (I18N[q]) lang = q; } catch (e) {}
-  const t = k => I18N[lang][k] ?? I18N.de[k];
-  const grid = document.getElementById("grid"), hint = document.getElementById("hint");
-  const DEVS = [
-    { n: "d1", day: "t1", eve: "e1", bg: "linear-gradient(135deg,#4338ca,#1e1b4b)", ebg: "linear-gradient(135deg,#1e3a8a,#0b1026)" },
-    { n: "d2", day: "t2", eve: "e2", bg: "linear-gradient(135deg,#c2410c,#3b1d06)", ebg: "linear-gradient(135deg,#7c2d12,#1c0a03)" },
-    { n: "d3", day: "t3", eve: "e3", bg: "linear-gradient(135deg,#0f766e,#022c22)", ebg: "linear-gradient(135deg,#134e4a,#03120f)" },
-    { n: "d4", day: "t4", eve: "e4", bg: "linear-gradient(135deg,#6d28d9,#2e1065)", ebg: "linear-gradient(135deg,#3b0764,#12021f)" },
-  ];
-  const render = () => {
-    grid.innerHTML = DEVS.map(d => {
-      const bg = alarm ? "linear-gradient(135deg,#b91c1c,#450a0a)" : evening ? d.ebg : d.bg;
-      const txt = alarm ? t("alarm_text") : t(evening ? d.eve : d.day);
-      const pill = alarm ? '<span class="pill tk">' + t("alarm_pill") + "</span>" : '<span class="pill on">' + t("online") + "</span>";
-      return '<div class="dev"><div class="pv" style="background:' + bg + '">' + txt + '</div><div class="bd"><div><b>' + t(d.n) + "</b>" + pill + "</div><div><small>" + t("program") + "</small><small>" + t(evening ? "eve" : "day") + "</small></div></div></div>";
-    }).join("");
-    document.getElementById("alarm-label").textContent = t(alarm ? "alarm_off" : "alarm_on");
-    hint.textContent = t(hintKey);
+  const t = (k, v) => { let x = I18N[lang][k] ?? I18N.de[k] ?? k; if (v) for (const n in v) x = x.replace("{" + n + "}", v[n]); return x; };
+  const esc = x => String(x).replace(/[&<>"]/g, c => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;" }[c]));
+  const G = ["linear-gradient(135deg,#4338ca,#1e1b4b)", "linear-gradient(135deg,#c2410c,#3b1d06)", "linear-gradient(135deg,#0f766e,#022c22)",
+             "linear-gradient(135deg,#6d28d9,#2e1065)", "linear-gradient(135deg,#a16207,#291a02)", "linear-gradient(135deg,#be123c,#4c0519)",
+             "linear-gradient(135deg,#0369a1,#082f49)", "linear-gradient(135deg,#15803d,#052e16)"];
+
+  // --- Demo-Zustand ---
+  let S, view = "displays", openPl = "p1", tick = 0, upCount = 0;
+  const fresh = () => ({
+    media: [
+      { id: "m1", k: "m1", g: G[0], v: 1 }, { id: "m2", k: "m2", g: G[1], v: 0 }, { id: "m3", k: "m3", g: G[2], v: 0 },
+      { id: "m4", k: "m4", g: G[3], v: 1 }, { id: "m5", k: "m5", g: G[4], v: 0 }, { id: "m6", k: "m6", g: G[5], v: 0 },
+    ],
+    pls: [{ id: "p1", k: "pl1", items: ["m1", "m4", "m6"] }, { id: "p2", k: "pl2", items: ["m2", "m5"] }, { id: "p3", k: "pl3", items: ["m3"] }],
+    devs: [{ k: "d1", pl: "p1" }, { k: "d2", pl: "p2" }, { k: "d3", pl: "p1" }, { k: "d4", pl: "p3" }],
+    alarm: false,
+  });
+  S = fresh();
+  const media = id => S.media.find(m => m.id === id);
+  const pl = id => S.pls.find(p => p.id === id);
+  const plName = p => p.name ?? t(p.k);
+  const mName = m => m.name ?? t(m.k);
+  const main = document.getElementById("main"), app = document.getElementById("app");
+  let toastTimer;
+  const toast = msg => {
+    const el = main.querySelector(".toast span"); if (!el) return;
+    el.textContent = msg; el.classList.add("show");
+    clearTimeout(toastTimer); toastTimer = setTimeout(() => el.classList.remove("show"), 2600);
   };
+  const icon = id => '<svg class="i"><use href="#' + id + '"/></svg>';
+
+  const vDisplays = () => {
+    const cards = S.devs.map((d, i) => {
+      const p = pl(d.pl), items = p.items.map(media).filter(Boolean);
+      let pv;
+      if (S.alarm) pv = '<div class="pv" style="background:linear-gradient(135deg,#b91c1c,#450a0a)"><b>' + esc(t("alarm_text")) + "</b></div>";
+      else if (!items.length) pv = '<div class="pv off">' + esc(t("no_content")) + "</div>";
+      else {
+        const idx = tick % items.length, m = items[idx];
+        const dots = items.length > 1 ? '<div class="dots">' + items.map((_, j) => '<i class="' + (j === idx ? "on" : "") + '"></i>').join("") + "</div>" : "";
+        pv = '<div class="pv" style="background:' + m.g + '">' + dots + "<small>" + esc(t(m.v ? "kind_video" : "kind_image")) + "</small><b>" + esc(mName(m)) + "</b></div>";
+      }
+      const opts = S.pls.map(x => '<option value="' + x.id + '"' + (x.id === d.pl ? " selected" : "") + ">" + esc(plName(x)) + "</option>").join("");
+      return '<div class="dcard">' + pv + '<div class="dbody"><div class="dtop"><b>' + esc(t(d.k)) + "</b>" +
+        (S.alarm ? '<span class="pill tk">' + esc(t("alarm_pill")) + "</span>" : '<span class="pill on">' + esc(t("online")) + "</span>") +
+        '</div><label class="flab" for="dsel' + i + '">' + esc(t("lbl_playlist")) + '</label><select class="sel" id="dsel' + i + '" data-dev="' + i + '">' + opts + "</select></div></div>";
+    }).join("");
+    return '<div class="mh"><h3>' + esc(t("nav_displays")) + '</h3><div class="sp"><button class="btn ' + (S.alarm ? "" : "danger") + '" type="button" data-act="alarm">' + icon("siren") + esc(t(S.alarm ? "alarm_off" : "alarm_on")) + "</button></div></div>" +
+      '<div class="dgrid">' + cards + "</div>";
+  };
+
+  const vPlaylists = () => {
+    if (!pl(openPl)) openPl = S.pls[0].id;
+    const list = S.pls.map(p => '<button class="plb" type="button" data-pl="' + p.id + '" aria-pressed="' + (p.id === openPl) + '">' + esc(plName(p)) + "<small>" + p.items.length + " " + esc(t("items")) + "</small></button>").join("");
+    const p = pl(openPl);
+    const on = S.devs.filter(d => d.pl === p.id).map(d => t(d.k));
+    const rows = p.items.map((id, i) => {
+      const m = media(id);
+      return '<div class="item"><div class="th" style="background:' + m.g + '"></div><span>' + esc(mName(m)) + "</span><small>" + esc(t(m.v ? "kind_video" : "kind_image")) + "</small>" +
+        '<button class="ib" type="button" data-mv="' + i + ':-1" aria-label="' + esc(t("up_btn")) + '"' + (i === 0 ? " disabled" : "") + ">" + icon("up") + "</button>" +
+        '<button class="ib" type="button" data-mv="' + i + ':1" aria-label="' + esc(t("down_btn")) + '"' + (i === p.items.length - 1 ? " disabled" : "") + ">" + icon("down") + "</button>" +
+        '<button class="ib" type="button" data-rm="' + i + '" aria-label="' + esc(t("remove")) + '">' + icon("x") + "</button></div>";
+    }).join("") || '<div class="empty">' + esc(t("empty_pl")) + "</div>";
+    const addOpts = '<option value="">' + esc(t("add_item")) + "</option>" + S.media.filter(m => !m.busy).map(m => '<option value="' + m.id + '">' + esc(mName(m)) + "</option>").join("");
+    return '<div class="mh"><h3>' + esc(t("nav_playlists")) + '</h3><div class="sp"><button class="btn primary" type="button" data-act="newpl">' + icon("plus") + esc(t("new_pl")) + "</button></div></div>" +
+      '<div class="plwrap"><div class="pllist">' + list + '</div><div class="pled"><h4>' + esc(plName(p)) + '</h4><div class="runs">' + esc(t("runs_on")) + " " + esc(on.length ? on.join(", ") : t("runs_none")) + "</div>" +
+      rows + '<label class="flab" for="addsel">' + esc(t("add_item")) + '</label><select class="sel" id="addsel">' + addOpts + "</select></div></div>";
+  };
+
+  const vMedia = () => {
+    const tiles = S.media.map(m => '<div class="mt"><div class="th" style="background:' + m.g + '">' + esc(mName(m)) + '</div><div class="mb"><span>' +
+      esc(m.busy ? t("uploading") : t(m.v ? "kind_video" : "kind_image")) + "</span></div>" + (m.busy ? '<div class="bar"><i style="width:' + m.busy + '%"></i></div>' : "") + "</div>").join("");
+    return '<div class="mh"><h3>' + esc(t("nav_media")) + '</h3><div class="sp"><button class="btn primary" type="button" data-act="upload">' + icon("upload") + esc(t("upload")) + "</button></div></div>" +
+      '<div class="mgrid">' + tiles + "</div>";
+  };
+
+  const render = () => {
+    const active = document.activeElement && main.contains(document.activeElement) ? document.activeElement.id : null;
+    main.innerHTML = ({ displays: vDisplays, playlists: vPlaylists, media: vMedia })[view]() + '<div class="toast"><span></span></div>';
+    if (active) document.getElementById(active)?.focus();
+    document.querySelectorAll(".navb").forEach(b => b.setAttribute("aria-current", b.dataset.view === view ? "page" : "false"));
+    document.getElementById("c-displays").textContent = S.devs.length;
+    document.getElementById("c-playlists").textContent = S.pls.length;
+    document.getElementById("c-media").textContent = S.media.length;
+  };
+  const screensFor = plId => S.devs.filter(d => d.pl === plId).length;
+
+  document.querySelectorAll(".navb").forEach(b => b.addEventListener("click", () => { view = b.dataset.view; render(); }));
+  main.addEventListener("click", e => {
+    const el = e.target.closest("button"); if (!el || el.disabled) return;
+    const p = pl(openPl);
+    if (el.dataset.act === "alarm") { S.alarm = !S.alarm; render(); toast(t(S.alarm ? "t_alarm" : "t_alarm_end")); }
+    else if (el.dataset.act === "newpl") {
+      const id = "p" + Date.now(); S.pls.push({ id, name: t("new_pl") + " " + (S.pls.length + 1), items: [] }); openPl = id; render(); toast(t("t_newpl"));
+    }
+    else if (el.dataset.pl) { openPl = el.dataset.pl; render(); }
+    else if (el.dataset.mv) {
+      const [i, dir] = el.dataset.mv.split(":").map(Number), j = i + dir;
+      [p.items[i], p.items[j]] = [p.items[j], p.items[i]]; render(); toast(t("t_order"));
+    }
+    else if (el.dataset.rm) { p.items.splice(Number(el.dataset.rm), 1); render(); toast(t("t_removed")); }
+    else if (el.dataset.act === "upload") {
+      const k = "up" + ((upCount % 4) + 1), m = { id: "u" + Date.now(), k, g: G[(6 + upCount) % G.length], v: upCount % 2, busy: 1 };
+      upCount++; S.media.unshift(m); render();
+      const step = () => {
+        m.busy = Math.min(100, m.busy + 12);
+        if (m.busy >= 100) { delete m.busy; if (view === "media") render(); toast(t("t_uploaded", { x: mName(m) })); }
+        else { if (view === "media") { const bar = main.querySelector(".mt .bar i"); if (bar) bar.style.width = m.busy + "%"; } setTimeout(step, 180); }
+      };
+      setTimeout(step, 180);
+    }
+  });
+  main.addEventListener("change", e => {
+    const el = e.target;
+    if (el.dataset.dev) { const d = S.devs[Number(el.dataset.dev)]; d.pl = el.value; render(); toast(t("t_assign", { d: t(d.k), p: plName(pl(d.pl)) })); }
+    else if (el.id === "addsel" && el.value) { const p = pl(openPl), m = media(el.value); p.items.push(m.id); render(); toast(t("t_added", { x: mName(m), n: screensFor(p.id) })); }
+  });
+  document.getElementById("d-reset").addEventListener("click", () => { S = fresh(); view = "displays"; openPl = "p1"; upCount = 0; render(); toast(t("t_reset")); });
+  document.getElementById("d-full").addEventListener("click", () => {
+    try { document.fullscreenElement ? document.exitFullscreen() : app.requestFullscreen(); } catch (e) {}
+  });
+  // Vorschau wechselt wie am echten TV
+  setInterval(() => { tick++; if (view === "displays" && !main.contains(document.activeElement)) render(); }, 3000);
+
   const apply = () => {
     const root = document.documentElement;
     root.lang = lang; root.dir = lang === "ar" ? "rtl" : "ltr";
@@ -801,11 +1003,9 @@ ar: {
     render();
   };
   document.querySelectorAll(".langs button").forEach(b => b.addEventListener("click", () => { lang = b.dataset.lang; apply(); }));
-  document.getElementById("btn-alarm").addEventListener("click", () => { alarm = !alarm; hintKey = alarm ? "hint_alarm" : "hint_alarm_end"; render(); });
-  document.getElementById("btn-switch").addEventListener("click", () => { evening = !evening; hintKey = evening ? "hint_eve" : "hint_day"; render(); });
   apply();
 
-  // TV-Demo: hartes Umschalten, nie schwarz
+  // TV-Demo im Hero: hartes Umschalten, nie schwarz
   const slides = [...document.querySelectorAll("#tv .slide")], prog = document.getElementById("prog");
   const reduce = matchMedia("(prefers-reduced-motion: reduce)").matches, dur = 3500;
   let cur = 0;
